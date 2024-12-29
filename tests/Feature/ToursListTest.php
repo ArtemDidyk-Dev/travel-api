@@ -57,6 +57,7 @@ class ToursListTest extends TestCase
     public function test_tours_list_returns_pagination(): void
     {
         $travel = Travel::factory()->create();
+        Tour::factory(16)->create(['travel_id' => $travel->id]);
         $response = $this->get(route('tours.index', $travel));
         $response->assertOk();
         $response->assertJsonCount(15, 'data');
