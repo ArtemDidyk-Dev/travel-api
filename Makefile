@@ -16,3 +16,13 @@ import-db:
 	@read -p "Enter the path to your SQL file: " SQL_FILE_PATH; \
 	docker exec -i ${DB_HOST} mysql -u root -proot ${DB_DATABASE} < $$SQL_FILE_PATH; \
 	echo "\033[0;32mDone\033[0m"
+
+# ECS command
+.PHONY: ecs
+ecs:
+	@docker exec ${PROJECT_NAME}_app vendor/bin/ecs check --fix
+
+# TEST Start command
+test:
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan test"
+
