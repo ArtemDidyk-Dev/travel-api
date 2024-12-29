@@ -19,7 +19,7 @@ class TourFactory extends Factory
     {
         return [
             'name' => fake()->text(20),
-            'travel_id' =>Travel::factory(),
+            'travel_id' => Travel::inRandomOrder()->value('id'),
             'start_date' => now(),
             'end_date' => now()->addDays(rand(1, 10)),
             'price' => $this->faker->randomFloat(2, 10, 999),
