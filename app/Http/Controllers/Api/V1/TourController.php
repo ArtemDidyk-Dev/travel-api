@@ -5,23 +5,35 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Filters\TourFilterRequests;
 use App\Http\Requests\StoreTourRequest;
 use App\Http\Requests\UpdateTourRequest;
 use App\Http\Resources\TourResource;
 use App\Models\Tour;
 use App\Models\Travel;
+use App\Services\TourServiceInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ *
+ */
 class TourController extends Controller
 {
     /**
+     * @param TourServiceInterface $tourService
+     */
+    public function __construct(
+        private readonly TourServiceInterface $tourService
+    )
+    {
+    }
+
+    /**
      * Display a listing of the resource.
      */
-    public function index(Travel $travel): AnonymousResourceCollection
+    public function index(Travel $travel, TourFilterRequests $filterRequests): AnonymousResourceCollection
     {
-        $tours = $travel->tours()
-            ->orderBy('start_date')
-            ->paginate();
+        $tours = $this->tourService->filters($travel->tours(), $filterRequests->all());
         return TourResource::collection($tours);
     }
 
