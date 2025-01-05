@@ -16,16 +16,6 @@ class TourFilter extends AbstractFilter
 
     public const PRICE_TO = 'price_to';
 
-    protected function getCallbacks(): array
-    {
-        return [
-            self::START_DATE => [$this, 'startDate'],
-            self::END_DATE => [$this, 'endDate'],
-            self::PRICE_FROM => [$this, 'priceFrom'],
-            self::PRICE_TO => [$this, 'priceTo'],
-        ];
-    }
-
     public function startDate(Builder $builder, $value): void
     {
         $builder->whereDate(self::START_DATE, $value);
@@ -46,4 +36,13 @@ class TourFilter extends AbstractFilter
         $builder->where('price', '<=', $value * 100);
     }
 
+    protected function getCallbacks(): array
+    {
+        return [
+            self::START_DATE => [$this, 'startDate'],
+            self::END_DATE => [$this, 'endDate'],
+            self::PRICE_FROM => [$this, 'priceFrom'],
+            self::PRICE_TO => [$this, 'priceTo'],
+        ];
+    }
 }

@@ -14,18 +14,11 @@ use App\Models\Travel;
 use App\Services\TourServiceInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-/**
- *
- */
 class TourController extends Controller
 {
-    /**
-     * @param TourServiceInterface $tourService
-     */
     public function __construct(
         private readonly TourServiceInterface $tourService
-    )
-    {
+    ) {
     }
 
     /**
@@ -33,7 +26,7 @@ class TourController extends Controller
      */
     public function index(Travel $travel, TourFilterRequests $filterRequests): AnonymousResourceCollection
     {
-        $tours = $this->tourService->filters($travel->tours(), $filterRequests->all());
+        $tours = $this->tourService->filters($travel, $filterRequests->all());
         return TourResource::collection($tours);
     }
 

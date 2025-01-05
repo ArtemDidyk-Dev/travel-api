@@ -4,36 +4,43 @@ namespace Tests\Feature;
 
 use App\Models\Travel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TravelsListTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_travels_list_returns_paginated_data_correctly(): void
+
+    #[Test] public function it_returns_paginated_travels_list_correctly(): void
     {
         Travel::factory(16)->create(['is_public' => true]);
-        $response = $this->get(route('travels.index'));
-        $response->assertOk();
-        $response->assertJsonCount(15, 'data');
-        $response->assertJsonPath('meta.last_page', 2);
 
+        $response = $this->get(route('travels.index'));
+
+        $response->assertOk()
+            ->assertJsonCount(15, 'data')
+            ->assertJsonPath('meta.last_page', 2);
     }
 
-    public function test_travels_list_shows_only_public_travels(): void
+    #[Test] public function it_shows_only_public_travels_in_list(): void
     {
-        $public = Travel::factory()->create(['is_public' => true]);
+        $publicTravel = Travel::factory()->create(['is_public' => true]);
+        $privateTravel = Travel::factory()->create(['is_public' => false]);
+
         $response = $this->get(route('travels.index'));
-        $response->assertOk();
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonPath('data.0.name',  $public->name);
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.name', $publicTravel->name)
+            ->assertJsonMissing(['name' => $privateTravel->name]);
     }
 
-    public function test_travels_returns_404(): void
+    #[Test] public function it_returns_404_for_non_existent_travel(): void
     {
-        $nonExistentTravelSlug = 'test-test';
+        $nonExistentTravelSlug = 'non-existent-travel';
+
         $response = $this->getJson(route('travels.show', $nonExistentTravelSlug));
+
         $response->assertNotFound();
     }
-
-
 }

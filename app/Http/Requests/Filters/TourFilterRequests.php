@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Filters;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator as ValidatorSecond;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class TourFilterRequests extends FormRequest
@@ -30,14 +32,6 @@ class TourFilterRequests extends FormRequest
         ];
     }
 
-    protected function passedValidation(): void
-    {
-        $this->merge([
-            'sort_by' => $this->input('sort_by', 'price'),
-            'sort_order' => $this->input('sort_order', 'asc'),
-        ]);
-    }
-
     public function failedValidation(Validator|ValidatorSecond $validator): void
     {
         throw new HttpResponseException(response()->json([
@@ -53,5 +47,13 @@ class TourFilterRequests extends FormRequest
             'sort_by' => "The sort by field must be one of 'price', 'start_date', 'end_date'",
             'sort_order' => 'The sort order field must be one of asc, desc',
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'sort_by' => $this->input('sort_by', 'start_date'),
+            'sort_order' => $this->input('sort_order', 'asc'),
+        ]);
     }
 }
