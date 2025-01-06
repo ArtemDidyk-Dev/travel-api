@@ -7,7 +7,7 @@ namespace App\Services;
 use App\Http\Filters\TourFilter;
 use App\Models\Travel;
 
-class TourService implements TourServiceInterface
+final readonly class TourService implements TourServiceInterface
 {
     public function filters(Travel $travel, array $request)
     {

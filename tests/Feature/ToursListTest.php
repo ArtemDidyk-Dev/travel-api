@@ -162,7 +162,82 @@ class ToursListTest extends TestCase
             ->assertJsonMissing(['id' => $cheapTour->id]);
     }
 
+    #[Test] public function it_filters_tours_by_data_range(): void
+    {
+        $travel = Travel::factory()->create();
+        $lateTour =  Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 300,
+            'start_date' => '2024-12-30',
+            'end_date' => '2025-1-12',
+        ]);
+        $earlierTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 300,
+            'start_date' => '2024-12-1',
+            'end_date' => '2025-1-1',
+        ]);
+        $response = $this->getJson(route('tours.index', [
+            'travel' => $travel,
+            'start_date' => '2024-12-29',
+        ]));
 
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['id' => $lateTour->id])
+            ->assertJsonMissing(['id' => $earlierTour->id]);
+
+        $response = $this->getJson(route('tours.index', [
+            'travel' => $travel,
+            'end_date' => '2025-1-1',
+        ]));
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['id' =>$earlierTour->id])
+            ->assertJsonMissing(['id' => $lateTour->id]);
+
+        $includedTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 400,
+            'start_date' => '2024-12-20',
+            'end_date' => '2024-12-25',
+        ]);
+        $excludedTour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 300,
+            'start_date' => '2024-12-30',
+            'end_date' => '2025-01-10',
+        ]);
+
+        $response = $this->getJson(route('tours.index', [
+            'travel' => $travel,
+            'start_date' => '2024-12-15',
+            'end_date' => '2024-12-26',
+        ]));
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['id' => $includedTour->id])
+            ->assertJsonMissing(['id' => $excludedTour->id]);
+
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+            'price' => 500,
+            'start_date' => '2024-12-10',
+            'end_date' => '2024-12-20',
+        ]);
+
+        $response = $this->getJson(route('tours.index', [
+            'travel' => $travel,
+            'start_date' => '2024-12-25',
+            'end_date' => '2024-12-30',
+        ]));
+
+        $response->assertOk()
+            ->assertJsonCount(0, 'data')
+            ->assertJsonMissing(['id' => $tour->id]);
+    }
 
     #[Test] public function it_returns_validation_errors_for_invalid_parameters(): void
     {

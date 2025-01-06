@@ -18,12 +18,12 @@ class TourFilter extends AbstractFilter
 
     public function startDate(Builder $builder, $value): void
     {
-        $builder->whereDate(self::START_DATE, $value);
+        $builder->where(self::START_DATE, '>=',  $value);
     }
 
     public function endDate(Builder $builder, $value): void
     {
-        $builder->whereDate(self::END_DATE, $value);
+        $builder->where(self::END_DATE, '<=', $value);
     }
 
     public function priceFrom(Builder $builder, $value): void
