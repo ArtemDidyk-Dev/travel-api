@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -39,7 +37,7 @@ class CreateUserCommandTest extends TestCase
     }
 
 
-    #[Test]   public function it_fails_if_validation_fails()
+    #[Test]   public function it_fails_if_validation_fails(): void
     {
         $this->artisan('create:user')
             ->expectsQuestion('What is your name?', '')
@@ -51,7 +49,7 @@ class CreateUserCommandTest extends TestCase
     }
 
 
-    #[Test] public function it_displays_error_if_role_not_found()
+    #[Test] public function it_displays_error_if_role_not_found(): void
     {
 
         $this->artisan('create:user')
