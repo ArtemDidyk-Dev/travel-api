@@ -18,7 +18,7 @@ class TourFilter extends AbstractFilter
 
     public function startDate(Builder $builder, $value): void
     {
-        $builder->where(self::START_DATE, '>=',  $value);
+        $builder->where(self::START_DATE, '>=', $value);
     }
 
     public function endDate(Builder $builder, $value): void
