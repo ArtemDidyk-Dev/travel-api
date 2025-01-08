@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enum\Role as RoleEnum;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -35,10 +36,15 @@ class CreateUserCommand extends Command
         $data['name'] = $this->ask(question: 'What is your name?');
         $data['email'] = $this->ask(question: 'What is your email?');
         $data['password'] = $this->secret(question: 'What is your password?');
-        $roleName = $this->choice(question: 'What is your role?', choices: ['admin', 'editor'], default: 1);
+        $roleName = $this->choice(question: 'What is your role?', choices: [
+            RoleEnum::ADMIN->name,
+            RoleEnum::EDITOR->name,
+            RoleEnum::USER->name,
+        ], default: 0);
         $role = Role::where('name', $roleName)->first();
         if (! $role) {
             $this->error('Role not found');
+
             return 1;
         }
 
@@ -52,6 +58,7 @@ class CreateUserCommand extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
+
             return 1;
         }
 
@@ -63,6 +70,7 @@ class CreateUserCommand extends Command
         });
 
         $this->info('User created');
+
         return 0;
     }
 }
