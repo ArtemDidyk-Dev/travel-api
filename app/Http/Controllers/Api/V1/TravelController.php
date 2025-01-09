@@ -16,7 +16,7 @@ class TravelController extends Controller
     public function index(): AnonymousResourceCollection
     {
 
-        $travels = Travel::isPublic()->paginate();
+        $travels = Travel::paginate();
         return TravelResource::collection($travels);
     }
 

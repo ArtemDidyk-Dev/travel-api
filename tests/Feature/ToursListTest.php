@@ -14,7 +14,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_returns_correct_tours_for_travel_slug(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         $tour = Tour::factory()->create(['travel_id' => $travel->id]);
 
         $response = $this->getJson(route('tours.index', $travel));
@@ -26,7 +26,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_returns_paginated_tours_list(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         Tour::factory(16)->create(['travel_id' => $travel->id]);
 
         $response = $this->getJson(route('tours.index', $travel));
@@ -38,7 +38,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_displays_correct_tour_price(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         Tour::factory(16)->create([
             'travel_id' => $travel->id,
             'price' => 11.33,
@@ -61,7 +61,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_paginates_tours_list_correctly(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         Tour::factory(16)->create(['travel_id' => $travel->id]);
 
         $response = $this->getJson(route('tours.index', $travel));
@@ -75,7 +75,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_sorts_tours_by_start_date(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         $earlierTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'start_date' => now(),
@@ -96,7 +96,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_sorts_tours_by_price(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         $expensiveTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 200,
@@ -128,7 +128,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_filters_tours_by_price_range(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         $expensiveTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 300,
@@ -164,7 +164,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_filters_tours_by_data_range(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
         $lateTour =  Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 300,
@@ -241,7 +241,7 @@ class ToursListTest extends TestCase
 
     #[Test] public function it_returns_validation_errors_for_invalid_parameters(): void
     {
-        $travel = Travel::factory()->create();
+        $travel = Travel::factory()->create(['is_public' => true]);
 
         $response = $this->getJson(route('tours.index', [
             'travel' => $travel,

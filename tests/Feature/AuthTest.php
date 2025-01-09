@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -89,6 +90,22 @@ class AuthTest extends TestCase
             'message' => 'Wrong email or password',
         ]);
     }
+    #[Test] public function it_logout_successful(): void
+    {
+
+        $role = Role::create(['name' => RoleEnum::USER->name]);
+        $user = User::factory()->create([
+            'email' => 'john.doe@example.com',
+            'password' => Hash::make('password12345'),
+        ]);
+        $user->roles()->attach($role);
+        $token = $user->createToken('Authentification Token')->plainTextToken;
+        $response = $this
+            ->withHeader('Authorization', "Bearer $token")
+            ->postJson(route('auth.logout'));
+        $response->assertNoContent();
+    }
+
 
 
 }

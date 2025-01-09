@@ -14,17 +14,23 @@ class LoginController extends Controller
 {
     public function __invoke(UserLoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt($request->only(['email', 'password']))) {
+        try {
+            if (! Auth::attempt($request->only(['email', 'password']))) {
+                return response()->json([
+                    'message' => 'Wrong email or password',
+                ], 401);
+            }
+            $user = User::query()->where('email', $request->email)->first();
+            $user->tokens()
+                ->delete();
             return response()->json([
-                'message' => 'Wrong email or password',
-            ], 401);
+                'token' => $user->createToken("Token of user: {$user->name}")
+                    ->plainTextToken,
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Login failed. Please try again later.',
+            ], 500);
         }
-        $user = User::query()->where('email', $request->email)->first();
-        $user->tokens()
-            ->delete();
-        return response()->json([
-            'token' => $user->createToken("Token of user: {$user->name}")
-                ->plainTextToken,
-        ], 201);
     }
 }

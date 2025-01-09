@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Scopes\PublicScope;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ScopedBy([PublicScope::class])]
 class Travel extends Model
 {
     use Sluggable;
@@ -37,11 +39,6 @@ class Travel extends Model
     public function numberOfNights(): Attribute
     {
         return Attribute::make(get: static fn ($value, $attributes) => $attributes['number_of_days'] - 1);
-    }
-
-    public function scopeIsPublic(Builder $builder): void
-    {
-        $builder->where('is_public', true);
     }
 
     public function tours(): HasMany

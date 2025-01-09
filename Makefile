@@ -26,3 +26,5 @@ ecs:
 test:
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan test"
 
+migrate:
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan migrate --env=testing && php artisan migrate"
