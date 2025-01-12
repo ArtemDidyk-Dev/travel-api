@@ -6,8 +6,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Filters\TourFilterRequests;
-use App\Http\Requests\StoreTourRequest;
-use App\Http\Requests\UpdateTourRequest;
 use App\Http\Resources\TourResource;
 use App\Models\Tour;
 use App\Models\Travel;
@@ -30,35 +28,12 @@ class TourController extends Controller
         return TourResource::collection($tours);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTourRequest $request)
+    public function show(Travel $travel, Tour $tour): TourResource
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tour $tour)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTourRequest $request, Tour $tour)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tour $tour)
-    {
-        //
+        $tour->load('travels');
+        if ($tour->travels->isNot($travel)) {
+            abort(404, 'Tour does not belong to this travel');
+        }
+        return new TourResource($tour);
     }
 }
