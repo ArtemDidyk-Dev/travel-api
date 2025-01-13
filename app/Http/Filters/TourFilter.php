@@ -36,6 +36,9 @@ class TourFilter extends AbstractFilter
         $builder->where('price', '<=', $value * 100);
     }
 
+    /**
+     * @return array[]
+     */
     protected function getCallbacks(): array
     {
         return [

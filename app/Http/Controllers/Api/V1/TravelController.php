@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TourResource;
 use App\Http\Resources\TravelResource;
 use App\Models\Travel;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,8 +19,8 @@ class TravelController extends Controller
         return TravelResource::collection($travels);
     }
 
-    public function show(Travel $travel): TravelResource
+    public function show(Travel $travel): AnonymousResourceCollection
     {
-        return new TravelResource($travel);
+        return TourResource::collection($travel->tours);
     }
 }

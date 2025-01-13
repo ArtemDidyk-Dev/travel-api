@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property string $number_of_days
+ * @property string $number_of_nights
+ * @property bool $is_public
+ */
 final class TravelResource extends JsonResource
 {
     /**
