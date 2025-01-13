@@ -30,9 +30,8 @@ class TourController extends Controller
 
     public function show(Travel $travel, Tour $tour): TourResource
     {
-        $tour->load('travels');
         if ($tour->travels->isNot($travel)) {
-            abort(404, 'Tour does not belong to this travel');
+            abort(404);
         }
         return new TourResource($tour);
     }

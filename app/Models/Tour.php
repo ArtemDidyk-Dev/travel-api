@@ -14,6 +14,8 @@ class Tour extends Model
     use HasFactory;
     use Filterable;
 
+    protected $fillable = ['name', 'description', 'start_date', 'end_date', 'price'];
+
     public function travels()
     {
         return $this->belongsTo(Travel::class, 'travel_id');

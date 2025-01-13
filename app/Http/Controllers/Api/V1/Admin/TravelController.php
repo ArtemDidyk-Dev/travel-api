@@ -20,8 +20,7 @@ class TravelController extends Controller
     {
         try {
             $travel = Travel::create($request->validated());
-            return (new TravelResource($travel->fresh()))->response()
-                ->setStatusCode(201);
+            return TravelResource::make($travel)->response()->setStatusCode(201);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'An error occurred. Please try again later.',
@@ -36,7 +35,7 @@ class TravelController extends Controller
     {
         try {
             $travel->update($request->validated());
-            return new TravelResource($travel->fresh());
+            return TravelResource::make($travel);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'An error occurred. Please try again later.',

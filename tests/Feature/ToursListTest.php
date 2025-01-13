@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Tour;
@@ -12,22 +14,34 @@ class ToursListTest extends TestCase
 {
     use RefreshDatabase;
 
-    #[Test] public function it_returns_correct_tours_for_travel_slug(): void
+    #[Test]
+    public function it_returns_correct_tours_for_travel_slug(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
-        $tour = Tour::factory()->create(['travel_id' => $travel->id]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
 
         $response = $this->getJson(route('tours.index', $travel));
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['id' => $tour->id]);
+            ->assertJsonFragment([
+                'id' => $tour->id,
+            ]);
     }
 
-    #[Test] public function it_returns_paginated_tours_list(): void
+    #[Test]
+    public function it_returns_paginated_tours_list(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
-        Tour::factory(16)->create(['travel_id' => $travel->id]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        Tour::factory(16)->create([
+            'travel_id' => $travel->id,
+        ]);
 
         $response = $this->getJson(route('tours.index', $travel));
 
@@ -36,9 +50,12 @@ class ToursListTest extends TestCase
             ->assertJsonPath('meta.last_page', 2);
     }
 
-    #[Test] public function it_displays_correct_tour_price(): void
+    #[Test]
+    public function it_displays_correct_tour_price(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
         Tour::factory(16)->create([
             'travel_id' => $travel->id,
             'price' => 11.33,
@@ -47,22 +64,32 @@ class ToursListTest extends TestCase
         $response = $this->getJson(route('tours.index', $travel));
 
         $response->assertOk()
-            ->assertJsonFragment(['price' => '11.33']);
+            ->assertJsonFragment([
+                'price' => '11.33',
+            ]);
     }
 
-    #[Test] public function it_returns_404_for_nonexistent_travel(): void
+    #[Test]
+    public function it_returns_404_for_nonexistent_travel(): void
     {
         $nonExistentTravelSlug = 'non-existent-slug';
 
-        $response = $this->getJson(route('tours.index', ['travel' => $nonExistentTravelSlug]));
+        $response = $this->getJson(route('tours.index', [
+            'travel' => $nonExistentTravelSlug,
+        ]));
 
         $response->assertNotFound();
     }
 
-    #[Test] public function it_paginates_tours_list_correctly(): void
+    #[Test]
+    public function it_paginates_tours_list_correctly(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
-        Tour::factory(16)->create(['travel_id' => $travel->id]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        Tour::factory(16)->create([
+            'travel_id' => $travel->id,
+        ]);
 
         $response = $this->getJson(route('tours.index', $travel));
 
@@ -73,18 +100,24 @@ class ToursListTest extends TestCase
             ->assertJsonPath('meta.current_page', 1);
     }
 
-    #[Test] public function it_sorts_tours_by_start_date(): void
+    #[Test]
+    public function it_sorts_tours_by_start_date(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
         $earlierTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'start_date' => now(),
-            'end_date' => now()->addDays(2),
+            'end_date' => now()
+                ->addDays(2),
         ]);
         $laterTour = Tour::factory()->create([
             'travel_id' => $travel->id,
-            'start_date' => now()->addDays(2),
-            'end_date' => now()->addDays(3),
+            'start_date' => now()
+                ->addDays(2),
+            'end_date' => now()
+                ->addDays(3),
         ]);
 
         $response = $this->getJson(route('tours.index', $travel));
@@ -94,9 +127,12 @@ class ToursListTest extends TestCase
             ->assertJsonPath('data.1.id', $laterTour->id);
     }
 
-    #[Test] public function it_sorts_tours_by_price(): void
+    #[Test]
+    public function it_sorts_tours_by_price(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
         $expensiveTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 200,
@@ -105,13 +141,16 @@ class ToursListTest extends TestCase
             'travel_id' => $travel->id,
             'price' => 100,
             'start_date' => now(),
-            'end_date' => now()->addDays(2),
+            'end_date' => now()
+                ->addDays(2),
         ]);
         $cheapLaterTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 100,
-            'start_date' => now()->addDays(2),
-            'end_date' => now()->addDays(3),
+            'start_date' => now()
+                ->addDays(2),
+            'end_date' => now()
+                ->addDays(3),
         ]);
 
         $response = $this->getJson(route('tours.index', [
@@ -126,9 +165,12 @@ class ToursListTest extends TestCase
             ->assertJsonPath('data.2.id', $expensiveTour->id);
     }
 
-    #[Test] public function it_filters_tours_by_price_range(): void
+    #[Test]
+    public function it_filters_tours_by_price_range(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
         $expensiveTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 300,
@@ -158,14 +200,21 @@ class ToursListTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['id' => $expensiveTour->id])
-            ->assertJsonMissing(['id' => $cheapTour->id]);
+            ->assertJsonFragment([
+                'id' => $expensiveTour->id,
+            ])
+            ->assertJsonMissing([
+                'id' => $cheapTour->id,
+            ]);
     }
 
-    #[Test] public function it_filters_tours_by_data_range(): void
+    #[Test]
+    public function it_filters_tours_by_data_range(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
-        $lateTour =  Tour::factory()->create([
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $lateTour = Tour::factory()->create([
             'travel_id' => $travel->id,
             'price' => 300,
             'start_date' => '2024-12-30',
@@ -184,8 +233,12 @@ class ToursListTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['id' => $lateTour->id])
-            ->assertJsonMissing(['id' => $earlierTour->id]);
+            ->assertJsonFragment([
+                'id' => $lateTour->id,
+            ])
+            ->assertJsonMissing([
+                'id' => $earlierTour->id,
+            ]);
 
         $response = $this->getJson(route('tours.index', [
             'travel' => $travel,
@@ -194,8 +247,12 @@ class ToursListTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['id' =>$earlierTour->id])
-            ->assertJsonMissing(['id' => $lateTour->id]);
+            ->assertJsonFragment([
+                'id' => $earlierTour->id,
+            ])
+            ->assertJsonMissing([
+                'id' => $lateTour->id,
+            ]);
 
         $includedTour = Tour::factory()->create([
             'travel_id' => $travel->id,
@@ -218,8 +275,12 @@ class ToursListTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonFragment(['id' => $includedTour->id])
-            ->assertJsonMissing(['id' => $excludedTour->id]);
+            ->assertJsonFragment([
+                'id' => $includedTour->id,
+            ])
+            ->assertJsonMissing([
+                'id' => $excludedTour->id,
+            ]);
 
         $tour = Tour::factory()->create([
             'travel_id' => $travel->id,
@@ -236,12 +297,17 @@ class ToursListTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(0, 'data')
-            ->assertJsonMissing(['id' => $tour->id]);
+            ->assertJsonMissing([
+                'id' => $tour->id,
+            ]);
     }
 
-    #[Test] public function it_returns_validation_errors_for_invalid_parameters(): void
+    #[Test]
+    public function it_returns_validation_errors_for_invalid_parameters(): void
     {
-        $travel = Travel::factory()->create(['is_public' => true]);
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
 
         $response = $this->getJson(route('tours.index', [
             'travel' => $travel,

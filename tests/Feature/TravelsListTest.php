@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Travel;
@@ -11,9 +13,12 @@ class TravelsListTest extends TestCase
 {
     use RefreshDatabase;
 
-    #[Test] public function it_returns_paginated_travels_list_correctly(): void
+    #[Test]
+    public function it_returns_paginated_travels_list_correctly(): void
     {
-        Travel::factory(16)->create(['is_public' => true]);
+        Travel::factory(16)->create([
+            'is_public' => true,
+        ]);
 
         $response = $this->get(route('travels.index'));
 
@@ -22,20 +27,28 @@ class TravelsListTest extends TestCase
             ->assertJsonPath('meta.last_page', 2);
     }
 
-    #[Test] public function it_shows_only_public_travels_in_list(): void
+    #[Test]
+    public function it_shows_only_public_travels_in_list(): void
     {
-        $publicTravel = Travel::factory()->create(['is_public' => true]);
-        $privateTravel = Travel::factory()->create(['is_public' => false]);
+        $publicTravel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $privateTravel = Travel::factory()->create([
+            'is_public' => false,
+        ]);
 
         $response = $this->get(route('travels.index'));
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.name', $publicTravel->name)
-            ->assertJsonMissing(['name' => $privateTravel->name]);
+            ->assertJsonMissing([
+                'name' => $privateTravel->name,
+            ]);
     }
 
-    #[Test] public function it_returns_404_for_non_existent_travel(): void
+    #[Test]
+    public function it_returns_404_for_non_existent_travel(): void
     {
         $nonExistentTravelSlug = 'non-existent-travel';
 
