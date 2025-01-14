@@ -32,6 +32,18 @@ class AdminToursTest extends TestCase
     }
 
     #[Test]
+    public function it_editor_create_tour(): void
+    {
+        $this->createEditor();
+        $travel = Travel::factory()->create();
+        $response = $this->postJson(route('admin.tours.store', $travel->id), $this->getTour());
+        $response->assertCreated();
+        $response->assertJsonFragment([
+            'name' => $this->getTour()['name'],
+        ]);
+    }
+
+    #[Test]
     public function it_admin_update_tour(): void
     {
         $this->createAdmin();
@@ -56,9 +68,49 @@ class AdminToursTest extends TestCase
     }
 
     #[Test]
+    public function it_editor_update_tour(): void
+    {
+        $this->createEditor();
+        $travel = Travel::factory()->create();
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+        $response = $this->putJson(
+            route('admin.tours.update', [
+                'travel' => $travel,
+                'tour' => $tour,
+            ]),
+            $this->getTour()
+        );
+        $response->assertOk();
+        $response->assertJsonMissing([
+            'name' => $tour->name,
+        ]);
+        $response->assertJsonFragment([
+            'name' => $this->getTour()['name'],
+        ]);
+    }
+
+    #[Test]
     public function it_admin_destroy_tour(): void
     {
         $this->createAdmin();
+        $travel = Travel::factory()->create();
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+        $this->deleteJson(route('admin.tours.destroy', [
+            'travel' => $travel,
+            'tour' => $tour,
+        ]))->assertStatus(204);
+        $this->assertModelMissing($tour);
+    }
+
+    #[Test]
+    public function it_editor_destroy_tour(): void
+    {
+        $this->createEditor();
+
         $travel = Travel::factory()->create();
         $tour = Tour::factory()->create([
             'travel_id' => $travel->id,
@@ -160,6 +212,22 @@ class AdminToursTest extends TestCase
             ->attach($role);
         Sanctum::actingAs($user);
 
+        return $user;
+    }
+
+    public function createEditor()
+    {
+        $role = Role::create([
+            'name' => RoleEnum::EDITOR->name,
+        ]);
+        $user = User::factory()->create([
+            'name' => 'editor',
+            'email' => 'editor@editor.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->roles()
+            ->attach($role);
+        Sanctum::actingAs($user);
         return $user;
     }
 

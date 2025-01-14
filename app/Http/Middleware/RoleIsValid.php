@@ -10,16 +10,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleIsValid
 {
-    /**
+    /** http://travel-api.localhost/api/v1/admin/travels/store
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $roles): Response
     {
+        $rolesArray = explode('|', $roles);
 
-        if (! auth()->user()->roles()->where('name', $role)->exists()) {
-            abort(Response::HTTP_FORBIDDEN);
+        if (! auth()->user()->roles()->whereIn('name', $rolesArray)->exists()) {
+            return response()->json([
+                'message' => 'Forbidden',
+            ], Response::HTTP_FORBIDDEN);
         }
         return $next($request);
     }

@@ -30,6 +30,17 @@ class AdminTravelsTest extends TestCase
     }
 
     #[Test]
+    public function it_editor_create_travel(): void
+    {
+        $this->createEditor();
+        $response = $this->postJson(route('admin.travels.store'), $this->getTravel());
+        $response->assertCreated();
+        $response->assertJsonFragment([
+            'name' => 'travel',
+        ]);
+    }
+
+    #[Test]
     public function it_admin_update_travel(): void
     {
         $this->createAdmin();
@@ -45,9 +56,34 @@ class AdminTravelsTest extends TestCase
     }
 
     #[Test]
+    public function it_editor_update_travel(): void
+    {
+        $this->createEditor();
+        $travel = Travel::factory()->create();
+        $response = $this->putJson(route('admin.travels.update', $travel), $this->getTravel());
+        $response->assertOk();
+        $response->assertJsonMissing([
+            'name' => $travel->name,
+        ]);
+        $response->assertJsonFragment([
+            'name' => 'travel',
+        ]);
+    }
+
+    #[Test]
     public function it_admin_destroy_travel(): void
     {
         $this->createAdmin();
+        $travel = Travel::factory()->create();
+        $this->deleteJson(route('admin.travels.destroy', $travel))
+            ->assertStatus(204);
+        $this->assertModelMissing($travel);
+    }
+
+    #[Test]
+    public function it_editor_destroy_travel(): void
+    {
+        $this->createEditor();
         $travel = Travel::factory()->create();
         $this->deleteJson(route('admin.travels.destroy', $travel))
             ->assertStatus(204);
@@ -78,8 +114,8 @@ class AdminTravelsTest extends TestCase
             'name' => RoleEnum::USER->name,
         ]);
         $user = User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
+            'name' => 'user',
+            'email' => 'user@mail.com',
             'password' => Hash::make('password'),
         ]);
         $user->roles()
@@ -120,6 +156,22 @@ class AdminTravelsTest extends TestCase
             ->attach($role);
         Sanctum::actingAs($user);
 
+        return $user;
+    }
+
+    public function createEditor()
+    {
+        $role = Role::create([
+            'name' => RoleEnum::EDITOR->name,
+        ]);
+        $user = User::factory()->create([
+            'name' => 'editor',
+            'email' => 'editor@editor.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->roles()
+            ->attach($role);
+        Sanctum::actingAs($user);
         return $user;
     }
 

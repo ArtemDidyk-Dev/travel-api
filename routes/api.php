@@ -38,12 +38,13 @@ Route::group([
 Route::group(
     [
         'prefix' => 'admin',
-        'middleware' => ['throttle:api', 'auth:sanctum', 'role:ADMIN'],
+        'middleware' => ['throttle:api', 'auth:sanctum'],
         'as' => 'admin.',
     ],
     static function () {
         Route::group([
             'prefix' => 'travels',
+            'middleware' => 'role:ADMIN|EDITOR',
         ], static function () {
             Route::post('store', [AdminTravelController::class, 'store'])->name('travels.store');
             Route::group([

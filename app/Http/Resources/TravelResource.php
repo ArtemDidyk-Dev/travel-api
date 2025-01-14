@@ -34,7 +34,7 @@ final class TravelResource extends JsonResource
             'description' => $this->description,
             'number_of_days' => $this->number_of_days,
             'number_of_nights' => $this->number_of_nights,
-            'is_public' => $this->when($this->userHasRole([Role::ADMIN, Role::EDITOR]), $this->is_public),
+            'is_public' => $this->when($this->userHasRole([Role::ADMIN, Role::EDITOR]), (bool) $this->is_public),
         ];
     }
 
