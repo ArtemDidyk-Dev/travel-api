@@ -27,7 +27,6 @@ class UserRoles extends FormRequest
     public function rules(): array
     {
         return [
-            'user' => 'required|exists:users,id',
             'roles' => 'required|array',
             'roles.*' => 'required|exists:roles,id',
         ];

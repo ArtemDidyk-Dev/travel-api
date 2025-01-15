@@ -4,32 +4,32 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Role;
 use App\Models\User;
 
 final readonly class RoleServices implements RoleServicesInterface
 {
-    public function assignRolesToUser(array $data): bool
+    public function assignRolesToUser(User $user, array $data): bool
     {
-        $user = User::with('roles')->find($data['user']);
-        if ($user?->roles()->whereIn('role_id', $data['roles'])->exists()) {
+        if ($user->roles()->whereIn('role_id', $data['roles'])->exists()) {
             return false;
         }
-        $user?->roles()
+        $user->roles()
             ->attach($data['roles']);
 
         return true;
     }
 
-    public function getRolesNames(array $roles): string
+    public function getRolesNames(User $user, array $roles): string
     {
-        return Role::whereIn('id', $roles)->pluck('name')->implode(', ');
+        return $user->roles()
+            ->whereIn('role_id', $roles)
+            ->pluck('name')
+            ->implode(', ');
     }
 
-    public function deleteRolesToUser(array $data): void
+    public function deleteRolesToUser(User $user, array $roles): void
     {
-        $user = User::with('roles')->find($data['user']);
-        $user?->roles()
-            ->detach($data['roles']);
+        $user->roles()
+            ->detach($roles);
     }
 }

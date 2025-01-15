@@ -78,8 +78,10 @@ Route::group(
             'as' => 'roles.',
         ], static function () {
             Route::get('/', [AdminRoleController::class, 'index'])->name('index');
-            Route::post('/user/add', [AdminRoleController::class, 'assignRolesToUser'])->name('user.add');
-            Route::delete('/user/delete', [AdminRoleController::class, 'deleteRolesToUser'])->name('user.delete');
+            Route::post('/users/{user}/add', [AdminRoleController::class, 'assignRolesToUser'])->name('user.add');
+            Route::delete('/users/{user}/delete', [AdminRoleController::class, 'deleteRolesToUser'])->name(
+                'user.delete'
+            );
         });
     }
 );
