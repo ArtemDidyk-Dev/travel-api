@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\RoleServices;
+use App\Services\RoleServicesInterface;
 use App\Services\TourService;
 use App\Services\TourServiceInterface;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(TourServiceInterface::class, TourService::class);
+        $this->app->bind(RoleServicesInterface::class, RoleServices::class);
     }
 
     /**

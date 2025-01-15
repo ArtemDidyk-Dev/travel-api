@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\V1\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Api\V1\Admin\TourController as AdminTourController;
 use App\Http\Controllers\Api\V1\Admin\TravelController as AdminTravelController;
+use App\Http\Controllers\Api\V1\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
@@ -60,6 +62,24 @@ Route::group(
                     Route::delete('{tour}', [AdminTourController::class, 'destroy'])->name('tours.destroy');
                 });
             });
+        });
+        Route::group([
+            'prefix' => 'users',
+            'middleware' => 'role:ADMIN',
+            'as' => 'users.',
+        ], static function () {
+            Route::get('/', [AdminUserController::class, 'index'])->name('index');
+            Route::get('/{user}', [AdminUserController::class, 'show'])->name('show');
+            Route::delete('/{user}', [AdminUserController::class, 'destroy'])->name('destroy');
+        });
+        Route::group([
+            'prefix' => 'roles',
+            'middleware' => 'role:ADMIN',
+            'as' => 'roles.',
+        ], static function () {
+            Route::get('/', [AdminRoleController::class, 'index'])->name('index');
+            Route::post('/user/add', [AdminRoleController::class, 'assignRolesToUser'])->name('user.add');
+            Route::delete('/user/delete', [AdminRoleController::class, 'deleteRolesToUser'])->name('user.delete');
         });
     }
 );
