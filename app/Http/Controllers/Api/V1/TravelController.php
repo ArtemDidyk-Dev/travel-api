@@ -14,13 +14,12 @@ class TravelController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-
         $travels = Travel::paginate();
         return TravelResource::collection($travels);
     }
 
     public function show(Travel $travel): AnonymousResourceCollection
     {
-        return TourResource::collection($travel->tours);
+        return TourResource::collection($travel->tours()->paginate());
     }
 }

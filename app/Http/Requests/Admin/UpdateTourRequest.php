@@ -26,12 +26,17 @@ class UpdateTourRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+
+        $rules = [
             'name' => 'required|string',
             'start_date' => 'date|required',
             'end_date' => 'required|date|after:start_date',
             'price' => 'required|numeric|min:0.01',
         ];
+        if ($this->file('images')) {
+            $rules['images.*'] = 'image|mimes:jpg,jpeg,png|max:2048';
+        }
+        return $rules;
     }
 
     public function failedValidation(Validator|ValidatorSecond $validator): void

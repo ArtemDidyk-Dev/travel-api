@@ -60,6 +60,9 @@ Route::group(
                     Route::post('store', [AdminTourController::class, 'store'])->name('tours.store');
                     Route::put('{tour}', [AdminTourController::class, 'update'])->name('tours.update');
                     Route::delete('{tour}', [AdminTourController::class, 'destroy'])->name('tours.destroy');
+                    Route::delete('{tour}/files', [AdminTourController::class, 'destroyFiles'])->name(
+                        'tours.destroy.files'
+                    );
                 });
             });
         });

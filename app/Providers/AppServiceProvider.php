@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\ImageInterface;
+use App\Services\ImageService;
 use App\Services\RoleServices;
 use App\Services\RoleServicesInterface;
 use App\Services\TourService;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(TourServiceInterface::class, TourService::class);
         $this->app->bind(RoleServicesInterface::class, RoleServices::class);
+        $this->app->bind(ImageInterface::class, ImageService::class);
     }
 
     /**

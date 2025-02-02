@@ -34,6 +34,27 @@ class ToursListTest extends TestCase
     }
 
     #[Test]
+    public function it_returns_correct_tour_for_id(): void
+    {
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+
+        $response = $this->getJson(route('tours.show', [
+            'travel' => $travel,
+            'tour' => $tour,
+        ]));
+        $response->assertOk();
+        $response->assertJsonFragment([
+            'id' => $tour->id,
+            'images' => [],
+        ]);
+    }
+
+    #[Test]
     public function it_returns_paginated_tours_list(): void
     {
         $travel = Travel::factory()->create([

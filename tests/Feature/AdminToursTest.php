@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Enum\ImagePath;
 use App\Enum\Role as RoleEnum;
+use App\Models\Image;
 use App\Models\Role;
 use App\Models\Tour;
 use App\Models\Travel;
 use App\Models\User;
+use App\Services\ImageInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -18,6 +23,14 @@ use Tests\TestCase;
 class AdminToursTest extends TestCase
 {
     use RefreshDatabase;
+
+    private ImageInterface $imageService;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->imageService = app(ImageInterface::class);
+    }
 
     #[Test]
     public function it_admin_create_tour(): void
@@ -162,6 +175,61 @@ class AdminToursTest extends TestCase
     }
 
     #[Test]
+    public function it_can_upload_a_images_for_tour(): void
+    {
+        $this->createAdmin();
+        $travel = Travel::factory()->create();
+        $imageFirst = UploadedFile::fake()->image('tour-image.jpg');
+        $imageSecond = UploadedFile::fake()->image('tour-image.jpg');
+        $response = $this->post(
+            route('admin.tours.store', $travel->id),
+            $this->getTour([$imageFirst, $imageSecond])
+        );
+        foreach ([$imageFirst, $imageSecond] as $image) {
+            Storage::disk('public')->assertExists($this->imageService->processFile($image, ImagePath::TOUR_PATH));
+        }
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'start_date',
+                'end_date',
+                'price',
+                'images' => [
+                    '*' => ['id', 'url'],
+                ],
+            ],
+        ]);
+    }
+
+    #[Test]
+    public function it_can_delete_a_images_for_tour(): void
+    {
+        $this->createAdmin();
+        $travel = Travel::factory()->create();
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+        $tour->images()->createMany([
+            ['path' => 'public/images/tours/679ff490614db7.65605970.jpg'],
+            ['path' => 'public/images/tours/679ff490614db7.65605970.jpg'],
+        ]);
+
+        $ids = $tour->images->pluck('id')->toArray();
+        foreach ($ids as $id) {
+            $this->assertDatabaseHas(Image::getTableName(), [
+                'id' => $id,
+            ]);
+        }
+        $response = $this->deleteJson(route('admin.tours.destroy.files', ['travel' => $travel, 'tour' => $tour]),
+            ['images' => $ids]
+        );
+        $response->assertStatus(204);
+        $this->assertDatabaseCount(Image::getTableName(), 0);
+    }
+
+    #[Test]
     public function it_non_admin_user_cannot_access_cud_tour(): void
     {
         $travel = Travel::factory()->create([
@@ -228,16 +296,22 @@ class AdminToursTest extends TestCase
         $user->roles()
             ->attach($role);
         Sanctum::actingAs($user);
+
         return $user;
     }
 
-    public function getTour(): array
+    public function getTour(array $files = []): array
     {
-        return [
+        $data = [
             'name' => 'Tour 1',
             'start_date' => '2019-01-01',
             'end_date' => '2019-01-02',
             'price' => 99.22,
         ];
+        if ($files !== []) {
+            $data['images'] = $files;
+        }
+
+        return $data;
     }
 }

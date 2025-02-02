@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Validator;
 
-class UserRoles extends FormRequest
+class DestroyFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,12 @@ class UserRoles extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'roles' => 'required|array',
-            'roles.*' => 'required|exists:roles,id',
+            'images' => 'required|array',
+            'images.*' => 'exists:images,id',
         ];
+
     }
 
     public function failedValidation(Validator|ValidatorSecond $validator): void
