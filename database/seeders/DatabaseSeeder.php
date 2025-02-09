@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
 use App\Models\Role;
 use App\Models\Tour;
 use App\Models\Travel;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Enum\Role as RoleEnum;
 class DatabaseSeeder extends Seeder
@@ -31,5 +33,8 @@ class DatabaseSeeder extends Seeder
             ],
         ];
         Role::insert($roles);
+        User::factory(10)->create();
+        Comment::factory(10)->create();
+
     }
 }

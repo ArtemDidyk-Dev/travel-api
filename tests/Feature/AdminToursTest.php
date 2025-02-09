@@ -211,19 +211,31 @@ class AdminToursTest extends TestCase
         $tour = Tour::factory()->create([
             'travel_id' => $travel->id,
         ]);
-        $tour->images()->createMany([
-            ['path' => 'public/images/tours/679ff490614db7.65605970.jpg'],
-            ['path' => 'public/images/tours/679ff490614db7.65605970.jpg'],
-        ]);
+        $tour->images()
+            ->createMany([
+                [
+                    'path' => 'public/images/tours/679ff490614db7.65605970.jpg',
+                ],
+                [
+                    'path' => 'public/images/tours/679ff490614db7.65605970.jpg',
+                ],
+            ]);
 
-        $ids = $tour->images->pluck('id')->toArray();
+        $ids = $tour->images->pluck('id')
+            ->toArray();
         foreach ($ids as $id) {
             $this->assertDatabaseHas(Image::getTableName(), [
                 'id' => $id,
             ]);
         }
-        $response = $this->deleteJson(route('admin.tours.destroy.files', ['travel' => $travel, 'tour' => $tour]),
-            ['images' => $ids]
+        $response = $this->deleteJson(
+            route('admin.tours.destroy.files', [
+                'travel' => $travel,
+                'tour' => $tour,
+            ]),
+            [
+                'images' => $ids,
+            ]
         );
         $response->assertStatus(204);
         $this->assertDatabaseCount(Image::getTableName(), 0);

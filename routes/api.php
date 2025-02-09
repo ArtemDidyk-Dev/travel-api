@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\TourController;
 use App\Http\Controllers\Api\V1\TravelController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,13 @@ Route::group([
     ], static function () {
         Route::get('/', [TourController::class, 'index'])->name('tours.index');
         Route::get('{tour}', [TourController::class, 'show'])->name('tours.show');
+        Route::group([
+            'prefix' => '{tour}/comments',
+            'middleware' => ['throttle:api', 'auth:sanctum'],
+            'as' => 'travels.tour.comments.',
+        ], static function () {
+            Route::post('/', CommentController::class)->name('store');
+        });
     });
 });
 

@@ -33,7 +33,7 @@ class TourController extends Controller
         if ($tour->travels->isNot($travel)) {
             abort(404);
         }
-        $tour->load('images');
+        $tour->load(['images', 'comments.images', 'comments.user']);
         return new TourResource($tour);
     }
 }

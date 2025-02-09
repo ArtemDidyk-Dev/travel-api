@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
 use App\Models\Tour;
 use App\Models\Travel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -43,6 +45,13 @@ class ToursListTest extends TestCase
             'travel_id' => $travel->id,
         ]);
 
+        $user = User::factory()->create();
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'tour_id' => $tour->id,
+            'is_public' => true,
+        ]);
+
         $response = $this->getJson(route('tours.show', [
             'travel' => $travel,
             'tour' => $tour,
@@ -51,6 +60,15 @@ class ToursListTest extends TestCase
         $response->assertJsonFragment([
             'id' => $tour->id,
             'images' => [],
+            'comments' => [
+                [
+                    'id' => $comment->id,
+                    'created_at' => $comment->created_at->format('Y M d'),
+                    'text' => $comment->text,
+                    'images' => [],
+                    'user' => $user->name,
+                ],
+            ],
         ]);
     }
 

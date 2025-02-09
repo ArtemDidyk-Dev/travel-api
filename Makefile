@@ -26,5 +26,10 @@ ecs:
 test:
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan test"
 
+# TEST Start command filter
+test-filter:
+	@read -p "Enter the Test class: " TEST; \
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan test --filter $$TEST"
+
 migrate:
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan migrate --env=testing && php artisan migrate"

@@ -25,6 +25,7 @@ final class TourResource extends JsonResource
             'end_date' => $this->end_date,
             'price' => number_format($this->price, 2),
             'images' => ImageResource::collection($this->whenLoaded('images')),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }
