@@ -63,6 +63,12 @@ services:
     environment:
       - PMA_ARBITRARY=1
     container_name: ${PROJECT_NAME}_phpmyadmin
+  mailhog:
+      image: mailhog/mailhog
+      ports:
+          - "8025:8025" # view
+          - "1025:1025" # SMTP
+      container_name: ${PROJECT_NAME}_mailhog
 networks:
   default:
     name: ${NETWORK_NAME}_proxynet

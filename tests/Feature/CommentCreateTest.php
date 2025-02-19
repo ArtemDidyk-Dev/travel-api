@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use App\Enum\ImagePath;
 use App\Enum\Role as RoleEnum;
+use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Role;
 use App\Models\Tour;
@@ -23,14 +24,6 @@ use Tests\TestCase;
 class CommentCreateTest extends TestCase
 {
     use RefreshDatabase;
-
-    private ImageInterface $imageService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->imageService = app(ImageInterface::class);
-    }
 
     #[Test]
     public function it_user_can_create(): void
@@ -51,14 +44,13 @@ class CommentCreateTest extends TestCase
             'text' => 'Hello',
             'images' => [$imageFirst, $imageSecond],
         ]);
-        foreach ([$imageFirst, $imageSecond] as $image) {
-            Storage::disk('public')->assertExists($this->imageService->processFile($image, ImagePath::TOUR_PATH));
-        }
+
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'message' => 'Comment added, stay tuned for updates',
         ]);
-        $this->assertDatabaseCount('comments', 1);
+        $this->assertDatabaseCount(Comment::getTableName(), 1);
+        $this->assertDatabaseCount(Image::getTableName(), 2);
         $this->assertDatabaseCount(Image::getTableName(), 2);
     }
 

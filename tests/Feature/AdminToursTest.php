@@ -24,14 +24,6 @@ class AdminToursTest extends TestCase
 {
     use RefreshDatabase;
 
-    private ImageInterface $imageService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->imageService = app(ImageInterface::class);
-    }
-
     #[Test]
     public function it_admin_create_tour(): void
     {
@@ -185,9 +177,6 @@ class AdminToursTest extends TestCase
             route('admin.tours.store', $travel->id),
             $this->getTour([$imageFirst, $imageSecond])
         );
-        foreach ([$imageFirst, $imageSecond] as $image) {
-            Storage::disk('public')->assertExists($this->imageService->processFile($image, ImagePath::TOUR_PATH));
-        }
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'data' => [
@@ -201,6 +190,7 @@ class AdminToursTest extends TestCase
                 ],
             ],
         ]);
+        $this->assertDatabaseCount(Image::getTableName(), 2);
     }
 
     #[Test]

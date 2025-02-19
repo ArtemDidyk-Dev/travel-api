@@ -43,14 +43,8 @@ class TourController extends Controller
         if ($tour->travels->isNot($travel)) {
             abort(404);
         }
-        try {
-            $this->tourService->update($tour, $request->validated());
-            return TourResource::make($tour);
-        } catch (\Throwable $e) {
-            return response()->json([
-                'message' => 'An error occurred. Please try again later.',
-            ], 500);
-        }
+        $this->tourService->update($tour, $request->validated());
+        return TourResource::make($tour);
 
     }
 

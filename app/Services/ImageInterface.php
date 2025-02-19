@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 
 interface ImageInterface
 {
-    public function save(Model $model, array $files, ImagePath $path);
+    public function save(Model $model, array $files, ImagePath $path, bool $async = false): void;
 
     public function delete(Model $model, array $fileIds);
 
-    public function update(Model $model, array $files, ImagePath $path);
+    public function update(Model $model, array $files, ImagePath $path, $async = false): void;
 }

@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTO\ImageDTO;
+use App\DTO\StoredFileDTO;
 use App\Enum\ImagePath;
+use App\Jobs\SaveImagesJob;
+use App\Jobs\UpdateImagesJob;
+use App\Manager\ImagesManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChain;
 use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
-final readonly class ImageService implements ImageInterface
+final class ImageService implements ImageInterface
 {
     private OptimizerChain $optimizerChain;
+
+    private ImagesManager $storeImagesManager;
 
     public function __construct()
     {
@@ -25,19 +31,31 @@ final readonly class ImageService implements ImageInterface
             ->addOptimizer(new Pngquant(['--force']))
 
             ->setTimeout(120);
+        $this->storeImagesManager = new ImagesManager();
     }
 
-    public function save(Model $model, array $files, ImagePath $path): void
+    public function save(Model $model, array $files, ImagePath $path, bool $async = false): void
     {
-
+        $storedFileDto = new StoredFileDto();
+        $storedFileDto->modelName = $model->getTable();
+        $storedFileDto->id = $model->id;
+        $images = [];
         foreach ($files as $file) {
-            $name = $this->generateUniqueFileName($file);
-            $filePath = $this->storeFile($file, $path->value, $name);
-            $model->images()
-                ->create([
-                    'path' => $filePath,
-                ]);
+            $image = new ImageDTO(
+                pathSave: $path->value,
+                nameSave: $this->generateUniqueFileName($file),
+                filePath: $file->store('temp_images', 'public'),
+                fileName: $file->getClientOriginalName(),
+            );
+            $images[] = $image;
         }
+        $storedFileDto->images = $images;
+
+        if ($async) {
+            SaveImagesJob::dispatch($storedFileDto, $this->optimizerChain);
+            return;
+        }
+        $this->storeImagesManager->createIntoDatabase($storedFileDto, $this->optimizerChain);
     }
 
     public function delete(Model $model, array $fileIds): void
@@ -49,18 +67,11 @@ final readonly class ImageService implements ImageInterface
         $imagesToDelete->each->delete();
     }
 
-    public function update(Model $model, array $files, ImagePath $path): void
+    public function update(Model $model, array $files, ImagePath $path, $async = false): void
     {
         $imagesToUpdate = $model->images->whereIn('id', array_keys($files));
         $this->deleteOldFiles($imagesToUpdate);
-        $this->updateImages($imagesToUpdate, $files, $path);
-    }
-
-    public function processFile(UploadedFile $file, ImagePath $path): string
-    {
-        $name = $this->generateUniqueFileName($file);
-
-        return $this->storeFile($file, $path->value, $name);
+        $this->updateImages($imagesToUpdate, $files, $path, $async);
     }
 
     private function generateUniqueFileName($file): string
@@ -70,14 +81,6 @@ final readonly class ImageService implements ImageInterface
         return uniqid('', true) . '.' . $extension;
     }
 
-    private function storeFile($file, string $path, string $name): string
-    {
-        $setFilePath = Storage::disk('public')->putFileAs($path, $file, $name);
-        $filePath = storage_path('app/public/' . $setFilePath);
-        $this->optimizerChain->optimize($filePath);
-        return $setFilePath;
-    }
-
     private function deleteOldFiles(Collection $images): void
     {
         $pathsToDelete = $images->pluck('path')
@@ -85,17 +88,31 @@ final readonly class ImageService implements ImageInterface
         Storage::disk('public')->delete($pathsToDelete);
     }
 
-    private function updateImages(Collection $images, array $files, ImagePath $path): void
+    private function updateImages(Collection $images, array $files, ImagePath $path, bool $async = false): void
     {
-        $images->each(function (Model $image) use ($files, $path) {
+        $storedFilesDTOs = [];
+        $images->each(function (Model $image) use ($files, $path, &$storedFilesDTOs) {
             if (isset($files[$image->id])) {
+                $storedFilesDTO = new StoredFileDTO();
+                $storedFilesDTO->id = $image->id;
+                $storedFilesDTO->modelName = $image->getTable();
                 $file = $files[$image->id];
-                $filePath = $this->processFile($file, $path);
-                $image->update([
-                    'path' => $filePath,
-                ]);
+
+                $imageDTO = new ImageDTO(
+                    pathSave: $path->value,
+                    nameSave: $this->generateUniqueFileName($file),
+                    filePath: $file->store('temp_images', 'public'),
+                    fileName: $file->getClientOriginalName(),
+                );
+                $storedFilesDTO->images = $imageDTO;
+                $storedFilesDTOs[] = $storedFilesDTO;
             }
         });
 
+        if ($async) {
+            UpdateImagesJob::dispatch($storedFilesDTOs, $this->optimizerChain);
+            return;
+        }
+        $this->storeImagesManager->updateIntoDatabase($storedFilesDTOs, $this->optimizerChain);
     }
 }

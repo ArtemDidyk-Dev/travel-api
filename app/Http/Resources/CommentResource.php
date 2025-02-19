@@ -22,6 +22,7 @@ class CommentResource extends JsonResource
             'user' => $this->whenLoaded('user', function () {
                 return $this->user->name;
             }),
+            'tour' => TourResource::make($this->whenLoaded('tour')),
         ];
     }
 
@@ -31,6 +32,7 @@ class CommentResource extends JsonResource
         if (! $user) {
             return false;
         }
+
         return $user->newQuery()
             ->hasRoles($roles)
             ->exists();

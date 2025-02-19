@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\V1\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\Api\V1\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Api\V1\Admin\TourController as AdminTourController;
 use App\Http\Controllers\Api\V1\Admin\TravelController as AdminTravelController;
@@ -74,6 +75,16 @@ Route::group(
                 });
             });
         });
+
+        Route::group([
+            'middleware' => 'role:ADMIN|EDITOR',
+        ], static function () {
+            Route::apiResource('comments', AdminCommentController::class)->except('store');
+            Route::delete('comments/{comment}/files', [AdminCommentController::class, 'destroyFiles'])->name(
+                'comments.destroy.files'
+            );
+        });
+
         Route::group([
             'prefix' => 'users',
             'middleware' => 'role:ADMIN',

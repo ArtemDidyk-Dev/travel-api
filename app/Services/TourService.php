@@ -66,13 +66,10 @@ final readonly class TourService implements TourServiceInterface
                 'price' => $data['price'],
             ]);
             if (isset($data['images'])) {
-                $this->image->update($tour, files: $data['images'], path: ImagePath::TOUR_PATH);
+                $this->image->update($tour, files: $data['images'], path: ImagePath::TOUR_PATH, async: true);
             }
             $tour->load('images');
 
         });
     }
 }
-//api/admin/travels/{travel}/tours/store
-//http://travel-api.localhost/api/v1/admin/travels/2/tours/56
-//http://travel-api.localhost/api/v1/admin/travels/2/tours/91

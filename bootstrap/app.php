@@ -4,8 +4,10 @@ use App\Http\Middleware\RoleIsValid;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -28,6 +30,13 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json([
                     'message' => 'Record not found.',
                 ], 404);
+            }
+        });
+        $exceptions->render(function (RouteNotFoundException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Unauthorized',
+                ], 401);
             }
         });
     })->create();
