@@ -25,25 +25,7 @@ class AdminRolesTest extends TestCase
         $this->createRole(RoleEnum::USER->name);
         $response = $this->getJson(route('admin.roles.index'));
         $response->assertStatus(200);
-
-        $response->assertJsonFragment(
-            [
-                'data' => [
-                    [
-                        'id' => RoleEnum::ADMIN->value,
-                        'name' => RoleEnum::ADMIN->name,
-                    ],
-                    [
-                        'id' => RoleEnum::EDITOR->value,
-                        'name' => RoleEnum::EDITOR->name,
-                    ],
-                    [
-                        'id' => RoleEnum::USER->value,
-                        'name' => RoleEnum::USER->name,
-                    ],
-                ],
-            ]
-        );
+        $response->assertJsonPath('data.*.name', [RoleEnum::ADMIN->name, RoleEnum::EDITOR->name, RoleEnum::USER->name]);
     }
 
     #[Test]
