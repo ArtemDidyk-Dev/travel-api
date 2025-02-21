@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Enum\ImagePath;
 use App\Enum\Role as RoleEnum;
 use App\Models\Image;
 use App\Models\Role;
 use App\Models\Tour;
 use App\Models\Travel;
 use App\Models\User;
-use App\Services\ImageInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;

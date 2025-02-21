@@ -12,7 +12,6 @@ use App\Models\Comment;
 use App\Services\CommentService;
 use App\Services\ImageInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CommentController extends Controller
@@ -42,8 +41,6 @@ class CommentController extends Controller
         $comment->load(['user', 'images', 'tour.travels']);
         $this->commentService->update($comment, $request->validated());
         return CommentResource::make($comment);
-
-
 
     }
 

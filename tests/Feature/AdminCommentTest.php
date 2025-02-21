@@ -79,22 +79,16 @@ class AdminCommentTest extends TestCase
         $response = $this->getJson(route('admin.comments.show', $comment));
         $response->assertOk()
             ->assertJsonStructure([
-               'data' => [
-                   'id',
-                   'text',
-                   'images',
-                   'is_public',
-                   'created_at',
-                   'user',
-                   'tour' => [
-                       'id',
-                       'name',
-                       'price',
-                       'start_date',
-                       'end_date',
-                   ],
-               ]
-           ]);
+                'data' => [
+                    'id',
+                    'text',
+                    'images',
+                    'is_public',
+                    'created_at',
+                    'user',
+                    'tour' => ['id', 'name', 'price', 'start_date', 'end_date'],
+                ],
+            ]);
     }
 
     #[Test]
@@ -114,7 +108,6 @@ class AdminCommentTest extends TestCase
         $response->assertNoContent();
         $this->assertDatabaseMissing(Comment::getTableName(), []);
     }
-
 
     #[Test]
     public function it_can_delete_a_images_for_comment(): void
@@ -136,7 +129,7 @@ class AdminCommentTest extends TestCase
                 ],
             ]);
 
-        $ids =  $comment->images->pluck('id')
+        $ids = $comment->images->pluck('id')
             ->toArray();
         foreach ($ids as $id) {
             $this->assertDatabaseHas(Image::getTableName(), [
@@ -155,8 +148,6 @@ class AdminCommentTest extends TestCase
         $this->assertDatabaseCount(Image::getTableName(), 0);
     }
 
-
-
     public function createAdmin()
     {
         $role = Role::create([
@@ -173,7 +164,6 @@ class AdminCommentTest extends TestCase
 
         return $user;
     }
-
 
     private function createUser(): User
     {
@@ -198,5 +188,4 @@ class AdminCommentTest extends TestCase
             'name' => $roleName,
         ]);
     }
-
 }

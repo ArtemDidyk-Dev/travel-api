@@ -13,5 +13,5 @@ interface CommentInterface
 
     public function destroy(Comment $comment);
 
-    public function update(Comment $comment, array $data );
+    public function update(Comment $comment, array $data);
 }

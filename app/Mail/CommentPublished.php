@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -11,20 +13,17 @@ use Illuminate\Queue\SerializesModels;
 
 class CommentPublished extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
-
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
-            public string $link
-    )
-    {
+        public string $link
+    ) {
     }
 
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'Comment Published',
-        );
+        return new Envelope(subject: 'Comment Published');
     }
 
     public function content(): Content

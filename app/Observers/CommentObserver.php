@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Mail\CommentPublished;
@@ -23,9 +25,12 @@ class CommentObserver
     {
         $oldData = $comment->getOriginal();
         $newData = $comment->getAttributes();
-        if($oldData['is_public'] === 0 && $newData['is_public'] === "1"){
+        if ($oldData['is_public'] === 0 && $newData['is_public'] === '1') {
             $tour = $comment->tour;
-            $tourLink = route('tours.show', ['tour' => $tour, 'travel' => $tour->travels]);
+            $tourLink = route('tours.show', [
+                'tour' => $tour,
+                'travel' => $tour->travels,
+            ]);
             Mail::to($comment->user->email)->queue(new CommentPublished($tourLink));
         }
     }
