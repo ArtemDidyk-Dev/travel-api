@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Enum\Role as RoleEnum;
+use App\Mail\CommentPublished;
 use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Role;
@@ -13,6 +14,7 @@ use App\Models\Travel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -146,6 +148,64 @@ class AdminCommentTest extends TestCase
         );
         $response->assertStatus(204);
         $this->assertDatabaseCount(Image::getTableName(), 0);
+    }
+
+    #[Test]
+    public function it_can_update_for_comment(): void
+    {
+        Mail::fake();
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+        $comment = Comment::factory()->create([
+            'tour_id' => $tour->id,
+            'is_public' => false,
+        ]);
+        $response = $this->putJson(route('admin.comments.update', $comment), [
+            'text' => 'lalalal',
+            'is_public' => false,
+        ]);
+        $response->assertOk();
+        $response->assertJsonFragment([
+            'text' => 'lalalal',
+            'is_public' => false,
+        ]);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'text',
+                'images',
+                'is_public',
+                'created_at',
+                'user',
+                'tour' => ['id', 'name', 'price', 'start_date', 'end_date'],
+            ],
+        ]);
+        Mail::assertNothingQueued();
+    }
+
+    #[Test]
+    public function it_sends_email_when_comment_is_made_public(): void
+    {
+        Mail::fake();
+        $travel = Travel::factory()->create([
+            'is_public' => true,
+        ]);
+        $tour = Tour::factory()->create([
+            'travel_id' => $travel->id,
+        ]);
+        $comment = Comment::factory()->create([
+            'tour_id' => $tour->id,
+            'is_public' => false,
+        ]);
+        $this->putJson(route('admin.comments.update', $comment), [
+            'text' => 'lalalal',
+            'is_public' => true,
+        ]);
+        Mail::assertQueued(CommentPublished::class);
     }
 
     public function createAdmin()
