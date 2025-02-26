@@ -46,14 +46,4 @@ class TravelsListTest extends TestCase
                 'name' => $privateTravel->name,
             ]);
     }
-
-    #[Test]
-    public function it_returns_404_for_non_existent_travel(): void
-    {
-        $nonExistentTravelSlug = 'non-existent-travel';
-
-        $response = $this->getJson(route('travels.show', $nonExistentTravelSlug));
-
-        $response->assertNotFound();
-    }
 }

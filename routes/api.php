@@ -19,8 +19,6 @@ Route::group([
     'prefix' => 'travels',
 ], static function () {
     Route::get('/', [TravelController::class, 'index'])->name('travels.index');
-    Route::get('{travel:slug}', [TravelController::class, 'show'])->name('travels.show');
-
     Route::group([
         'prefix' => '{travel:slug}/tours',
     ], static function () {
