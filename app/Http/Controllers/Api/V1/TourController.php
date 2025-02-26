@@ -283,6 +283,16 @@ class TourController extends Controller
             ]
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'Not Found',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'message', type: 'string', example: 'Record not found.'),
+            ],
+            type: 'object'
+        )
+    )]
     public function show(Travel $travel, Tour $tour): TourResource
     {
         if ($tour->travels->isNot($travel)) {
