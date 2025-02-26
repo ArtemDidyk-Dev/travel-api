@@ -62,10 +62,7 @@ class TourController extends Controller
         description: 'Field to sort by',
         in: 'query',
         required: false,
-        schema: new OA\Schema(
-            type: 'string',
-            enum: ['price', 'start_date', 'end_date']
-        ),
+        schema: new OA\Schema(type: 'string', enum: ['price', 'start_date', 'end_date']),
         example: 'price'
     )]
     #[OA\Parameter(
@@ -73,10 +70,7 @@ class TourController extends Controller
         description: 'Sorting order',
         in: 'query',
         required: false,
-        schema: new OA\Schema(
-            type: 'string',
-            enum: ['asc', 'desc']
-        ),
+        schema: new OA\Schema(type: 'string', enum: ['asc', 'desc']),
         example: 'asc'
     )]
     #[OA\Response(
@@ -180,9 +174,7 @@ class TourController extends Controller
         response: 404,
         description: 'Not Found',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Record not found.'),
-            ],
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Record not found.')],
             type: 'object'
         )
     )]
@@ -221,18 +213,22 @@ class TourController extends Controller
                                 items: new OA\Items(
                                     properties: [
                                         new OA\Property(property: 'id', type: 'integer', example: 11),
-                                        new OA\Property(property: 'url', type: 'string', example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'),
+                                        new OA\Property(
+                                            property: 'url',
+                                            type: 'string',
+                                            example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
+                                        ),
                                     ],
                                     type: 'object'
                                 ),
                                 example: [
                                     [
                                         'id' => 11,
-                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
+                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png',
                                     ],
                                     [
                                         'id' => 12,
-                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/anotherimage.png'
+                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/anotherimage.png',
                                     ],
                                 ]
                             ),
@@ -242,25 +238,33 @@ class TourController extends Controller
                                 items: new OA\Items(
                                     properties: [
                                         new OA\Property(property: 'id', type: 'integer', example: 11),
-                                        new OA\Property(property: 'text', type: 'string', example: 'Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima. Rem et nam blanditiis commodi ex'),
+                                        new OA\Property(
+                                            property: 'text',
+                                            type: 'string',
+                                            example: 'Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima. Rem et nam blanditiis commodi ex'
+                                        ),
                                         new OA\Property(
                                             property: 'images',
                                             type: 'array',
                                             items: new OA\Items(
                                                 properties: [
                                                     new OA\Property(property: 'id', type: 'integer', example: 11),
-                                                    new OA\Property(property: 'url', type: 'string', example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'),
+                                                    new OA\Property(
+                                                        property: 'url',
+                                                        type: 'string',
+                                                        example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
+                                                    ),
                                                 ],
                                                 type: 'object'
                                             ),
                                             example: [
                                                 [
                                                     'id' => 11,
-                                                    'url' => 'http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png'
+                                                    'url' => 'http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png',
                                                 ],
                                                 [
                                                     'id' => 12,
-                                                    'url' => 'http://travel-api.localhost/storage/public/images/comments/anotherimage.png'
+                                                    'url' => 'http://travel-api.localhost/storage/public/images/comments/anotherimage.png',
                                                 ],
                                             ]
                                         ),
@@ -287,9 +291,7 @@ class TourController extends Controller
         response: 404,
         description: 'Not Found',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Record not found.'),
-            ],
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Record not found.')],
             type: 'object'
         )
     )]
