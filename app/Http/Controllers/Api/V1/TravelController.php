@@ -12,6 +12,13 @@ use OpenApi\Attributes as OA;
 
 #[OA\Info(version: '1.0.0', title: 'My Doc Api')]
 #[OA\PathItem(path: '/api/v1/')]
+#[OA\SecurityScheme(
+    securityScheme: 'sanctumAuth',
+    type: 'http',
+    description: 'Enter your Sanctum token in the format: Bearer {token}',
+    bearerFormat: 'JWT',
+    scheme: 'bearer'
+)]
 class TravelController extends Controller
 {
     #[OA\Get(path: '/api/v1/travels', description: 'Shows the public status of the resource. Only visible to users with the Admin or Editor roles.', summary: 'Travels get', tags: [

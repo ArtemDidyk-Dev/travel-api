@@ -23,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 'role' => RoleIsValid::class,
             ]
         );
+        $middleware->redirectTo(
+            users: '/api/v1/travels'
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
