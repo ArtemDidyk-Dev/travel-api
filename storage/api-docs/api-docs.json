@@ -164,7 +164,7 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
                     }
                 ]
             }
@@ -284,6 +284,156 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/travels/{travel}/tours/{tour}/comments": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Add a new comment to a tour",
+                "description": "Stores a comment for a specific tour that belongs to a travel, with optional image attachments.",
+                "operationId": "storeComment",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "Slug travel",
+                        "required": true,
+                        "example": "aut-totam"
+                    },
+                    {
+                        "name": "tour",
+                        "in": "path",
+                        "description": "Tour ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "text"
+                                ],
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "maxLength": 5000,
+                                        "minLength": 1,
+                                        "example": "This tour was amazing!"
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Comment successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comment added, stay tuned for updates"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tour does not belong to the specified travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "text": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The text field is required"
+                                                    }
+                                                },
+                                                "images.0": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The image must be a file of type: jpg, jpeg, png"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/travels/{travel}/tours": {
@@ -841,20 +991,14 @@
             }
         }
     },
-    "components": {
-        "securitySchemes": {
-            "sanctumAuth": {
-                "type": "http",
-                "description": "Enter your Sanctum token in the format: Bearer {token}",
-                "bearerFormat": "JWT",
-                "scheme": "bearer"
-            }
-        }
-    },
     "tags": [
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Comments",
+            "description": "Comments"
         },
         {
             "name": "Tours",
@@ -864,5 +1008,15 @@
             "name": "Travels",
             "description": "Travels"
         }
-    ]
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Laravel Sanctum token authentication",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
 }

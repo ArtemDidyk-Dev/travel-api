@@ -14,7 +14,7 @@ class LogoutController extends Controller
         path: "/api/v1/auth/logout",
         description: "This endpoint logs out the authenticated user by revoking all issued tokens.",
         summary: "Logout user and revoke tokens",
-        security: [["sanctumAuth" => []]],
+        security: [["sanctum" => []]],
         tags: ['Auth'],
         responses: [
             new OA\Response(
