@@ -14,9 +14,12 @@ use OpenApi\Attributes as OA;
 #[OA\PathItem(path: '/api/v1/')]
 class TravelController extends Controller
 {
-    #[OA\Get(path: '/api/v1/travels', description: 'Shows the public status of the resource. Only visible to users with the Admin or Editor roles.', summary: 'Travels get', tags: [
-        'Travels',
-    ])]
+    #[OA\Get(
+        path: '/api/v1/travels',
+        description: 'Shows the public status of the resource. Only visible to users with the Admin or Editor roles.',
+        summary: 'Travels get',
+        tags: ['Travels']
+    )]
     #[OA\Parameter(
         name: 'page',
         description: 'The page number to retrieve',

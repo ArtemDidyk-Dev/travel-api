@@ -13,6 +13,7 @@ use App\Services\RoleServicesInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
+
 #[OA\Tag(name: 'Roles Management', description: 'Manage user roles')]
 class RoleController extends Controller
 {
@@ -25,7 +26,9 @@ class RoleController extends Controller
         path: '/api/v1/admin/roles',
         description: 'Retrieve a list of all roles. Only accessible to users with Admin or Editor roles.',
         summary: 'Get all roles',
-        security: [['sanctum' => []]],
+        security: [[
+            'sanctum' => [],
+        ]],
         tags: ['Roles Management'],
     )]
     #[OA\Response(
@@ -57,7 +60,6 @@ class RoleController extends Controller
                             'name' => 'USER',
                         ],
                     ]
-
                 ),
             ]
         )
@@ -66,9 +68,7 @@ class RoleController extends Controller
         response: 401,
         description: 'Unauthenticated',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.'),
-            ]
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')]
         )
     )]
     public function index(): AnonymousResourceCollection
@@ -76,12 +76,13 @@ class RoleController extends Controller
         return RoleResource::collection(Role::all());
     }
 
-
     #[OA\Post(
         path: '/api/v1/admin/roles/users/{user}/add',
         description: 'Assign roles to a user. Only accessible to Admins.',
         summary: 'Assign roles to a user',
-        security: [['sanctum' => []]],
+        security: [[
+            'sanctum' => [],
+        ]],
         tags: ['Roles Management'],
     )]
     #[OA\Parameter(
@@ -131,9 +132,7 @@ class RoleController extends Controller
         response: 401,
         description: 'Unauthenticated',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.'),
-            ]
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')]
         )
     )]
     #[OA\Response(
@@ -147,9 +146,7 @@ class RoleController extends Controller
                     property: 'errors',
                     type: 'object',
                     example: [
-                       'roles' => [
-                           'The selected roles are invalid.'
-                       ]
+                        'roles' => ['The selected roles are invalid.'],
                     ]
                 ),
             ]
@@ -161,7 +158,9 @@ class RoleController extends Controller
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(
-                    property: 'message', type: 'string', example: 'An error occurred while assigning roles.'
+                    property: 'message',
+                    type: 'string',
+                    example: 'An error occurred while assigning roles.'
                 ),
                 new OA\Property(
                     property: 'error',
@@ -176,11 +175,11 @@ class RoleController extends Controller
         try {
             $data = $request->validated();
             $user->load('roles');
-            if (!$this->roleServices->assignRolesToUser(user: $user, data: $data)) {
+            if (! $this->roleServices->assignRolesToUser(user: $user, data: $data)) {
                 $roles = $this->roleServices->getRolesNames(user: $user, roles: $data['roles']);
 
                 return response()->json([
-                    'message' => 'The user already has the selected role: '.$roles,
+                    'message' => 'The user already has the selected role: ' . $roles,
                 ], 400);
             }
 
@@ -199,7 +198,9 @@ class RoleController extends Controller
         path: '/api/v1/admin/roles/users/{user}/delete',
         description: 'Remove roles from a user. Only accessible to Admins.',
         summary: 'Remove roles from a user',
-        security: [['sanctum' => []]],
+        security: [[
+            'sanctum' => [],
+        ]],
         tags: ['Roles Management'],
     )]
     #[OA\Parameter(
@@ -219,21 +220,16 @@ class RoleController extends Controller
                     description: 'Array of role IDs to remove',
                     type: 'array',
                     items: new OA\Items(type: 'integer', example: 3)
-                )
+                ),
             ]
         )
     )]
-    #[OA\Response(
-        response: 204,
-        description: 'Roles removed successfully'
-    )]
+    #[OA\Response(response: 204, description: 'Roles removed successfully')]
     #[OA\Response(
         response: 401,
         description: 'Unauthenticated',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')
-            ]
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')]
         )
     )]
     #[OA\Response(
@@ -247,9 +243,7 @@ class RoleController extends Controller
                     property: 'errors',
                     type: 'object',
                     example: [
-                        'roles' => [
-                            'The selected roles are invalid.'
-                        ]
+                        'roles' => ['The selected roles are invalid.'],
                     ]
                 ),
             ]
@@ -260,8 +254,16 @@ class RoleController extends Controller
         description: 'Server error while removing roles',
         content: new OA\JsonContent(
             properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'An error occurred while deleting roles.'),
-                new OA\Property(property: 'error', type: 'string', example: 'SQLSTATE[23000]: Integrity constraint violation...')
+                new OA\Property(
+                    property: 'message',
+                    type: 'string',
+                    example: 'An error occurred while deleting roles.'
+                ),
+                new OA\Property(
+                    property: 'error',
+                    type: 'string',
+                    example: 'SQLSTATE[23000]: Integrity constraint violation...'
+                ),
             ]
         )
     )]

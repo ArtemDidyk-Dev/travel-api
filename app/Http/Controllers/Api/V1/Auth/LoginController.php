@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
+
 class LoginController extends Controller
 {
     #[OA\Post(
@@ -32,9 +33,7 @@ class LoginController extends Controller
                 response: 201,
                 description: 'Successful login',
                 content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'token', type: 'string', example: '1|abcdefg1234567')
-                    ]
+                    properties: [new OA\Property(property: 'token', type: 'string', example: '1|abcdefg1234567')]
                 )
             ),
             new OA\Response(
@@ -42,7 +41,7 @@ class LoginController extends Controller
                 description: 'Invalid credentials',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string', example: 'Wrong email or password')
+                        new OA\Property(property: 'message', type: 'string', example: 'Wrong email or password'),
                     ]
                 )
             ),
@@ -51,16 +50,8 @@ class LoginController extends Controller
                 description: 'Validation errors',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(
-                            property: 'success',
-                            type: 'boolean',
-                            example: false
-                        ),
-                        new OA\Property(
-                            property: 'message',
-                            type: 'string',
-                            example: 'Validation errors'
-                        ),
+                        new OA\Property(property: 'success', type: 'boolean', example: false),
+                        new OA\Property(property: 'message', type: 'string', example: 'Validation errors'),
                         new OA\Property(
                             property: 'errors',
                             properties: [
@@ -68,13 +59,13 @@ class LoginController extends Controller
                                     property: 'email',
                                     type: 'array',
                                     items: new OA\Items(type: 'string'),
-                                    example: ["The selected email is invalid."]
+                                    example: ['The selected email is invalid.']
                                 ),
                                 new OA\Property(
                                     property: 'password',
                                     type: 'array',
                                     items: new OA\Items(type: 'string'),
-                                    example: ["The password field is required."]
+                                    example: ['The password field is required.']
                                 ),
                             ],
                             type: 'object'
@@ -87,10 +78,14 @@ class LoginController extends Controller
                 description: 'Login failed',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string', example: 'Login failed. Please try again later.')
+                        new OA\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Login failed. Please try again later.'
+                        ),
                     ]
                 )
-            )
+            ),
         ]
     )]
     public function __invoke(UserLoginRequest $request): JsonResponse

@@ -338,6 +338,390 @@
                 ]
             }
         },
+        "/api/v1/admin/travels/store": {
+            "post": {
+                "tags": [
+                    "Travel Management"
+                ],
+                "summary": "Create a new travel",
+                "description": "Create a new travel with the specified parameters",
+                "operationId": "storeTravel",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "number_of_days"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Travel name",
+                                        "type": "string",
+                                        "example": "vel eaque"
+                                    },
+                                    "description": {
+                                        "description": "Travel description",
+                                        "type": "string",
+                                        "example": "Vel vel minima sunt earum. Temporibus sint voluptas aliquam dolor aut voluptatem delectus."
+                                    },
+                                    "slug": {
+                                        "description": "URL slug for the travel",
+                                        "type": "string",
+                                        "example": "vel-eaque"
+                                    },
+                                    "is_public": {
+                                        "description": "Visibility of the travel",
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "number_of_days": {
+                                        "description": "Number of days for the travel",
+                                        "type": "integer",
+                                        "example": 12
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Travel created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "vel eaque"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "vel-eaque"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Vel vel minima sunt earum. Temporibus sint voluptas aliquam dolor aut voluptatem delectus."
+                                                },
+                                                "number_of_days": {
+                                                    "type": "integer",
+                                                    "example": 7
+                                                },
+                                                "number_of_nights": {
+                                                    "type": "integer",
+                                                    "example": 6
+                                                },
+                                                "is_public": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while creating the travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/travels/{travel}": {
+            "put": {
+                "tags": [
+                    "Travel Management"
+                ],
+                "summary": "Update a specific travel",
+                "description": "Update the specified travel with new data",
+                "operationId": "updateTravel",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel to be updated",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "number_of_days"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Travel name",
+                                        "type": "string",
+                                        "example": "vel eaque"
+                                    },
+                                    "description": {
+                                        "description": "Travel description",
+                                        "type": "string",
+                                        "example": "Vel vel minima sunt earum. Temporibus sint voluptas aliquam dolor aut voluptatem delectus."
+                                    },
+                                    "slug": {
+                                        "description": "URL slug for the travel",
+                                        "type": "string",
+                                        "example": "vel-eaque"
+                                    },
+                                    "is_public": {
+                                        "description": "Visibility of the travel",
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "number_of_days": {
+                                        "description": "Number of days for the travel",
+                                        "type": "integer",
+                                        "example": 12
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Travel updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "vel eaque"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "vel-eaque"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Vel vel minima sunt earum. Temporibus sint voluptas aliquam dolor aut voluptatem delectus."
+                                                },
+                                                "number_of_days": {
+                                                    "type": "integer",
+                                                    "example": 7
+                                                },
+                                                "number_of_nights": {
+                                                    "type": "integer",
+                                                    "example": 6
+                                                },
+                                                "is_public": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Travel Management"
+                ],
+                "summary": "Delete a specific travel",
+                "description": "Delete a specific travel",
+                "operationId": "deleteTravel",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel to be deleted",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Travel deleted successfully"
+                    },
+                    "404": {
+                        "description": "Travel not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/users": {
             "get": {
                 "tags": [
@@ -1681,6 +2065,10 @@
         {
             "name": "Roles Management",
             "description": "Manage user roles"
+        },
+        {
+            "name": "Travel Management",
+            "description": "Manage Travel"
         },
         {
             "name": "User Management",

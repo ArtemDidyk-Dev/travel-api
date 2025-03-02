@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use Illuminate\Contracts\Validation\Validator as ValidatorSecond;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Validator;
 
 class UpdateTravelRequest extends FormRequest
 {
@@ -30,5 +33,14 @@ class UpdateTravelRequest extends FormRequest
             'is_public' => 'nullable|boolean',
             'number_of_days' => 'required|integer',
         ];
+    }
+
+    public function failedValidation(Validator|ValidatorSecond $validator): void
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Travel;
 use App\Services\CommentInterface;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
+
 class CommentController extends Controller
 {
     public function __construct(
@@ -23,7 +24,9 @@ class CommentController extends Controller
         operationId: 'storeComment',
         description: 'Stores a comment for a specific tour that belongs to a travel, with optional image attachments.',
         summary: 'Add a new comment to a tour',
-        security: [['sanctum' => []]],
+        security: [[
+            'sanctum' => [],
+        ]],
         tags: ['Comments'],
     )]
     #[OA\Parameter(name: 'travel', description: 'Slug travel', in: 'path', required: true, example: 'aut-totam')]
@@ -70,9 +73,7 @@ class CommentController extends Controller
         response: 404,
         description: 'Tour does not belong to the specified travel',
         content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'Not found'),
-            ]
+            properties: [new OA\Property(property: 'message', type: 'string', example: 'Not found')]
         )
     )]
     #[OA\Response(
@@ -93,11 +94,14 @@ class CommentController extends Controller
                         new OA\Property(
                             property: 'images.0',
                             type: 'array',
-                            items: new OA\Items(type: 'string', example: 'The image must be a file of type: jpg, jpeg, png')
-                        )
+                            items: new OA\Items(
+                                type: 'string',
+                                example: 'The image must be a file of type: jpg, jpeg, png'
+                            )
+                        ),
                     ],
                     type: 'object'
-                )
+                ),
             ]
         )
     )]
@@ -106,7 +110,11 @@ class CommentController extends Controller
         description: 'Server error',
         content: new OA\JsonContent(
             properties: [
-                new OA\Property(property: 'message', type: 'string', example: 'An error occurred. Please try again later.'),
+                new OA\Property(
+                    property: 'message',
+                    type: 'string',
+                    example: 'An error occurred. Please try again later.'
+                ),
             ]
         )
     )]

@@ -46,16 +46,8 @@ class RegisterController extends Controller
                 description: 'Validation errors',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(
-                            property: 'success',
-                            type: 'boolean',
-                            example: false
-                        ),
-                        new OA\Property(
-                            property: 'message',
-                            type: 'string',
-                            example: 'Validation errors'
-                        ),
+                        new OA\Property(property: 'success', type: 'boolean', example: false),
+                        new OA\Property(property: 'message', type: 'string', example: 'Validation errors'),
                         new OA\Property(
                             property: 'errors',
                             properties: [
@@ -63,13 +55,13 @@ class RegisterController extends Controller
                                     property: 'email',
                                     type: 'array',
                                     items: new OA\Items(type: 'string'),
-                                    example: ["The email has already been taken."]
+                                    example: ['The email has already been taken.']
                                 ),
                                 new OA\Property(
                                     property: 'password',
                                     type: 'array',
                                     items: new OA\Items(type: 'string'),
-                                    example: ["The password field is required."]
+                                    example: ['The password field is required.']
                                 ),
                             ],
                             type: 'object'
