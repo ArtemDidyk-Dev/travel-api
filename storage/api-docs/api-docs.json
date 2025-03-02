@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My Doc Api",
+        "title": "My Doc Travel api",
         "version": "1.0.0"
     },
     "paths": {
@@ -9,7 +9,7 @@
         "/api/v1/admin/roles": {
             "get": {
                 "tags": [
-                    "Admin"
+                    "Roles Management"
                 ],
                 "summary": "Get all roles",
                 "description": "Retrieve a list of all roles. Only accessible to users with Admin or Editor roles.",
@@ -84,7 +84,7 @@
         "/api/v1/admin/roles/users/{user}/add": {
             "post": {
                 "tags": [
-                    "Admin"
+                    "Roles Management"
                 ],
                 "summary": "Assign roles to a user",
                 "description": "Assign roles to a user. Only accessible to Admins.",
@@ -227,7 +227,7 @@
         "/api/v1/admin/roles/users/{user}/delete": {
             "delete": {
                 "tags": [
-                    "Admin"
+                    "Roles Management"
                 ],
                 "summary": "Remove roles from a user",
                 "description": "Remove roles from a user. Only accessible to Admins.",
@@ -341,7 +341,7 @@
         "/api/v1/admin/users": {
             "get": {
                 "tags": [
-                    "Admin"
+                    "User Management"
                 ],
                 "summary": "Users get",
                 "description": "Show Users Only visible to users with the Admin or Editor roles.",
@@ -514,7 +514,7 @@
         "/api/v1/admin/users/{id}": {
             "get": {
                 "tags": [
-                    "Admin"
+                    "User Management"
                 ],
                 "summary": "Get user by ID",
                 "description": "Get details of a specific user. Only visible to users with the Admin or Editor roles.",
@@ -618,7 +618,7 @@
             },
             "delete": {
                 "tags": [
-                    "Admin"
+                    "User Management"
                 ],
                 "summary": "Delete user by ID",
                 "description": "Delete a specific user. Only accessible to users with Admin or Editor roles.",
@@ -1679,8 +1679,12 @@
     },
     "tags": [
         {
-            "name": "Admin",
-            "description": "Admin"
+            "name": "Roles Management",
+            "description": "Manage user roles"
+        },
+        {
+            "name": "User Management",
+            "description": "Manage users"
         },
         {
             "name": "Auth",

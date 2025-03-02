@@ -9,13 +9,14 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
+#[OA\Tag(name: 'User Management', description: 'Manage users')]
 class UserController extends Controller
 {
     #[OA\Get(path: '/api/v1/admin/users',
         description: 'Show Users Only visible to users with the Admin or Editor roles.',
         summary: 'Users get',
         security: [['sanctum' => []]],
-        tags: ['Admin'])]
+        tags: ['User Management'])]
     #[OA\Parameter(
         name: 'page',
         description: 'The page number to retrieve',
@@ -110,7 +111,7 @@ class UserController extends Controller
         description: 'Get details of a specific user. Only visible to users with the Admin or Editor roles.',
         summary: 'Get user by ID',
         security: [['sanctum' => []]],
-        tags: ['Admin']
+        tags: ['User Management']
     )]
     #[OA\Parameter(
         name: 'id',
@@ -173,7 +174,7 @@ class UserController extends Controller
         description: 'Delete a specific user. Only accessible to users with Admin or Editor roles.',
         summary: 'Delete user by ID',
         security: [['sanctum' => []]],
-        tags: ['Admin']
+        tags: ['User Management']
     )]
     #[OA\Parameter(
         name: 'id',

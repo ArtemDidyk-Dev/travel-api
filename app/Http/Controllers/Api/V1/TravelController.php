@@ -10,7 +10,7 @@ use App\Models\Travel;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: '1.0.0', title: 'My Doc Api')]
+#[OA\Info(version: '1.0.0', title: 'My Doc Travel api')]
 #[OA\PathItem(path: '/api/v1/')]
 class TravelController extends Controller
 {

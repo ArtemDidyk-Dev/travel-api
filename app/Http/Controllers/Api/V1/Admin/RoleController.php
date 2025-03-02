@@ -13,7 +13,7 @@ use App\Services\RoleServicesInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
-
+#[OA\Tag(name: 'Roles Management', description: 'Manage user roles')]
 class RoleController extends Controller
 {
     public function __construct(
@@ -26,7 +26,7 @@ class RoleController extends Controller
         description: 'Retrieve a list of all roles. Only accessible to users with Admin or Editor roles.',
         summary: 'Get all roles',
         security: [['sanctum' => []]],
-        tags: ['Admin']
+        tags: ['Roles Management'],
     )]
     #[OA\Response(
         response: 200,
@@ -82,7 +82,7 @@ class RoleController extends Controller
         description: 'Assign roles to a user. Only accessible to Admins.',
         summary: 'Assign roles to a user',
         security: [['sanctum' => []]],
-        tags: ['Admin']
+        tags: ['Roles Management'],
     )]
     #[OA\Parameter(
         name: 'user',
@@ -200,7 +200,7 @@ class RoleController extends Controller
         description: 'Remove roles from a user. Only accessible to Admins.',
         summary: 'Remove roles from a user',
         security: [['sanctum' => []]],
-        tags: ['Admin']
+        tags: ['Roles Management'],
     )]
     #[OA\Parameter(
         name: 'user',
