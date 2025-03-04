@@ -49,6 +49,7 @@ final readonly class CommentService implements CommentInterface
             if (isset($data['images'])) {
                 $this->image->update($comment, files: $data['images'], path: ImagePath::COMMENT_PATH);
             }
+            $comment->unsetRelation('images');
             $comment->load('images');
         });
     }

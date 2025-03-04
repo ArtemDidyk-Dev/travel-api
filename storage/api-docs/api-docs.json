@@ -338,6 +338,674 @@
                 ]
             }
         },
+        "/api/v1/admin/travels/{travel}/tours/store": {
+            "post": {
+                "tags": [
+                    "Tour Management"
+                ],
+                "summary": "Add a new tour",
+                "description": "Stores a tour for a specific tour that belongs to a travel, with optional image attachments.",
+                "operationId": "storeTours",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel to retrieve",
+                        "required": true,
+                        "example": 4
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 5000,
+                                        "minLength": 1,
+                                        "example": "This tour was amazing!"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "exclusiveMinimum": true,
+                                        "example": 2.2,
+                                        "minimum": 0.1
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2025-02-09"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "2025-02-10"
+                                    },
+                                    "images[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tour get",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "vel eaque"
+                                                    },
+                                                    "start_date": {
+                                                        "type": "string",
+                                                        "example": "2025-02-09"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string",
+                                                        "example": "2025-02-14"
+                                                    },
+                                                    "price": {
+                                                        "type": "string",
+                                                        "example": "204.32"
+                                                    },
+                                                    "images": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 11
+                                                                },
+                                                                "url": {
+                                                                    "type": "string",
+                                                                    "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "id": 11,
+                                                                "url": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                            },
+                                                            {
+                                                                "id": 12,
+                                                                "url": "http://travel-api.localhost/storage/public/images/tours/anotherimage.png"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tour does not belong to the specified travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The name field is required"
+                                                    }
+                                                },
+                                                "price": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The price field is required"
+                                                    },
+                                                    "example": [
+                                                        "The price field is required",
+                                                        "The numeric field is required",
+                                                        "The price min 0.01"
+                                                    ]
+                                                },
+                                                "start_date": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The start_date field is required"
+                                                    }
+                                                },
+                                                "end_date": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The end_date field is required"
+                                                    },
+                                                    "example": [
+                                                        "The end date field must be a valid date.",
+                                                        "The end date field must be a date after start date."
+                                                    ]
+                                                },
+                                                "images.0": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The image must be a file of type: jpg, jpeg, png"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/travels/{travel}/tours/{tour}": {
+            "post": {
+                "tags": [
+                    "Tour Management"
+                ],
+                "summary": "Update a specific tour",
+                "description": "Update the specified tour with new data",
+                "operationId": "updateTour",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel to be updated",
+                        "required": true,
+                        "example": 12
+                    },
+                    {
+                        "name": "tour",
+                        "in": "path",
+                        "description": "ID of the tour to be deleted",
+                        "required": true,
+                        "example": 55
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 5000,
+                                        "minLength": 1,
+                                        "example": "This tour was amazing!"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "exclusiveMinimum": true,
+                                        "example": 2.2,
+                                        "minimum": 0.1
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2025-02-09"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "2025-02-10"
+                                    },
+                                    "images[132]": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "images[133]": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tour get",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "vel eaque"
+                                                    },
+                                                    "start_date": {
+                                                        "type": "string",
+                                                        "example": "2025-02-09"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string",
+                                                        "example": "2025-02-14"
+                                                    },
+                                                    "price": {
+                                                        "type": "string",
+                                                        "example": "204.32"
+                                                    },
+                                                    "images": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 11
+                                                                },
+                                                                "url": {
+                                                                    "type": "string",
+                                                                    "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "id": 11,
+                                                                "url": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                            },
+                                                            {
+                                                                "id": 12,
+                                                                "url": "http://travel-api.localhost/storage/public/images/tours/anotherimage.png"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tour does not belong to the specified travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The name field is required"
+                                                    }
+                                                },
+                                                "price": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The price field is required"
+                                                    },
+                                                    "example": [
+                                                        "The price field is required",
+                                                        "The numeric field is required",
+                                                        "The price min 0.01"
+                                                    ]
+                                                },
+                                                "start_date": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The start_date field is required"
+                                                    }
+                                                },
+                                                "end_date": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The end_date field is required"
+                                                    },
+                                                    "example": [
+                                                        "The end date field must be a valid date.",
+                                                        "The end date field must be a date after start date."
+                                                    ]
+                                                },
+                                                "images.0": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The image must be a file of type: jpg, jpeg, png"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tour Management"
+                ],
+                "summary": "Delete a specific tour",
+                "description": "Delete a specific tour",
+                "operationId": "deleteTour",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel to be deleted",
+                        "required": true,
+                        "example": 12
+                    },
+                    {
+                        "name": "tour",
+                        "in": "path",
+                        "description": "ID of the tour to be deleted",
+                        "required": true,
+                        "example": 55
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Tour deleted successfully"
+                    },
+                    "404": {
+                        "description": "Tour not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the Tour",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/travels/{travel}/tours/{tour}/files": {
+            "delete": {
+                "tags": [
+                    "Tour Management"
+                ],
+                "summary": "Delete specific files",
+                "description": "Delete specific tour files",
+                "operationId": "deleteTourFiles",
+                "parameters": [
+                    {
+                        "name": "travel",
+                        "in": "path",
+                        "description": "ID of the travel",
+                        "required": true,
+                        "example": 12
+                    },
+                    {
+                        "name": "tour",
+                        "in": "path",
+                        "description": "ID of the tour",
+                        "required": true,
+                        "example": 55
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "images"
+                                ],
+                                "properties": {
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Files deleted successfully"
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/travels/store": {
             "post": {
                 "tags": [
@@ -1397,7 +2065,7 @@
                                         "minLength": 1,
                                         "example": "This tour was amazing!"
                                     },
-                                    "images": {
+                                    "images[]": {
                                         "type": "array",
                                         "items": {
                                             "type": "string",
@@ -2065,6 +2733,10 @@
         {
             "name": "Roles Management",
             "description": "Manage user roles"
+        },
+        {
+            "name": "Tour Management",
+            "description": "Manage Tour"
         },
         {
             "name": "Travel Management",

@@ -52,7 +52,7 @@ class CommentController extends Controller
                         example: 'This tour was amazing!'
                     ),
                     new OA\Property(
-                        property: 'images',
+                        property: 'images[]',
                         type: 'array',
                         items: new OA\Items(type: 'string', format: 'binary')
                     ),
