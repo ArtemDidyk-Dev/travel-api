@@ -76,42 +76,38 @@ class TourController extends Controller
             properties: [
                 new OA\Property(
                     property: 'data',
-                    type: 'array',
-                    items: new OA\Items(
-                        properties: [
-                            new OA\Property(property: 'id', type: 'integer', example: 11),
-                            new OA\Property(property: 'name', type: 'string', example: 'vel eaque'),
-                            new OA\Property(property: 'start_date', type: 'string', example: '2025-02-09'),
-                            new OA\Property(property: 'end_date', type: 'string', example: '2025-02-14'),
-                            new OA\Property(property: 'price', type: 'string', example: '204.32'),
-                            new OA\Property(
-                                property: 'images',
-                                type: 'array',
-                                items: new OA\Items(
-                                    properties: [
-                                        new OA\Property(property: 'id', type: 'integer', example: 11),
-                                        new OA\Property(
-                                            property: 'url',
-                                            type: 'string',
-                                            example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
-                                        ),
-                                    ],
-                                    type: 'object'
-                                ),
-                                example: [
-                                    [
-                                        'id' => 11,
-                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png',
-                                    ],
-                                    [
-                                        'id' => 12,
-                                        'url' => 'http://travel-api.localhost/storage/public/images/tours/anotherimage.png',
-                                    ],
-                                ]
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 11),
+                        new OA\Property(property: 'name', type: 'string', example: 'vel eaque'),
+                        new OA\Property(property: 'start_date', type: 'string', example: '2025-02-09'),
+                        new OA\Property(property: 'end_date', type: 'string', example: '2025-02-14'),
+                        new OA\Property(property: 'price', type: 'string', example: '204.32'),
+                        new OA\Property(
+                            property: 'images',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 11),
+                                    new OA\Property(
+                                        property: 'url',
+                                        type: 'string',
+                                        example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
+                                    ),
+                                ],
+                                type: 'object'
                             ),
-                        ],
-                        type: 'object'
-                    )
+                            example: [
+                                [
+                                    'id' => 11,
+                                    'url' => 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png',
+                                ],
+                                [
+                                    'id' => 12,
+                                    'url' => 'http://travel-api.localhost/storage/public/images/tours/anotherimage.png',
+                                ],
+                            ]
+                        ),
+                    ],
                 ),
             ]
         )
