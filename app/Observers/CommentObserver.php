@@ -25,7 +25,7 @@ class CommentObserver
     {
         $oldData = $comment->getOriginal();
         $newData = $comment->getAttributes();
-        if ($oldData['is_public'] === 0 && (bool) $newData['is_public'] === true) {
+        if ($oldData['is_public'] === 0 && $newData['is_public'] === true) {
             $tour = $comment->tour;
             $tourLink = route('tours.show', [
                 'tour' => $tour,

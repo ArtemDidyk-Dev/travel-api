@@ -6,6 +6,721 @@
     },
     "paths": {
         "/api/v1/": {},
+        "/api/v1/admin/comments": {
+            "get": {
+                "tags": [
+                    "Comment Management"
+                ],
+                "summary": "Comments get",
+                "description": "Shows all comments of the resource",
+                "operationId": "8a9d6c0624b3b8c1f703c035fd2b965a",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number to retrieve",
+                        "required": false,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comments get",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "text": {
+                                                        "type": "string",
+                                                        "example": "Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima."
+                                                    },
+                                                    "is_public": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "images": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 2
+                                                                },
+                                                                "url": {
+                                                                    "type": "string",
+                                                                    "example": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "id": 2,
+                                                                "url": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                            },
+                                                            {
+                                                                "id": 3,
+                                                                "url": "http://travel-api.localhost/storage/public/images/comments/anotherimage.png"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2025 Feb 11"
+                                                    },
+                                                    "user": {
+                                                        "type": "string",
+                                                        "example": "Dr. Alivia Stamm"
+                                                    },
+                                                    "tour": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Fuga ipsa illo."
+                                                            },
+                                                            "start_date": {
+                                                                "type": "string",
+                                                                "example": "2025-02-09"
+                                                            },
+                                                            "end_date": {
+                                                                "type": "string",
+                                                                "example": "2025-02-19"
+                                                            },
+                                                            "price": {
+                                                                "type": "string",
+                                                                "example": "590.45"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://api-laravel.localhost/api/v1/comments?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://api-laravel.localhost/api/v1/comments?page=4"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://api-laravel.localhost/api/v1/comments?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 17
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/comments/{comment}": {
+            "get": {
+                "tags": [
+                    "Comment Management"
+                ],
+                "summary": "Comment get",
+                "description": "Show comment of the resource",
+                "operationId": "0a01fc1e1e04dd35b338d8cf90a14bd9",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "Comment id",
+                        "required": true,
+                        "example": "5"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment get",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima."
+                                                },
+                                                "is_public": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 11
+                                                            },
+                                                            "url": {
+                                                                "type": "string",
+                                                                "example": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "example": [
+                                                        {
+                                                            "id": 11,
+                                                            "url": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                        },
+                                                        {
+                                                            "id": 12,
+                                                            "url": "http://travel-api.localhost/storage/public/images/comments/anotherimage.png"
+                                                        }
+                                                    ]
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2025 Feb 11"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Dr. Alivia Stamm"
+                                                },
+                                                "tour": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Fuga ipsa illo."
+                                                        },
+                                                        "start_date": {
+                                                            "type": "string",
+                                                            "example": "2025-02-09"
+                                                        },
+                                                        "end_date": {
+                                                            "type": "string",
+                                                            "example": "2025-02-19"
+                                                        },
+                                                        "price": {
+                                                            "type": "string",
+                                                            "example": "590.45"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comment Management"
+                ],
+                "summary": "Update a specific comment",
+                "description": "Update the specified comment with new data (if is_public is updated to true, a queue will be created that will send a letter by email to the author of the comment that the comment passed the check)",
+                "operationId": "updateComment",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "ID of the comment to be updated",
+                        "required": true,
+                        "example": 11
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "text",
+                                    "is_public"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "maxLength": 5000,
+                                        "minLength": 1,
+                                        "example": "This tour was amazing!"
+                                    },
+                                    "is_public": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "images[2]": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "images[33]": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Comment update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima."
+                                                },
+                                                "is_public": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 11
+                                                            },
+                                                            "url": {
+                                                                "type": "string",
+                                                                "example": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "example": [
+                                                        {
+                                                            "id": 11,
+                                                            "url": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                        },
+                                                        {
+                                                            "id": 12,
+                                                            "url": "http://travel-api.localhost/storage/public/images/comments/anotherimage.png"
+                                                        }
+                                                    ]
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2025 Feb 11"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Dr. Alivia Stamm"
+                                                },
+                                                "tour": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Fuga ipsa illo."
+                                                        },
+                                                        "start_date": {
+                                                            "type": "string",
+                                                            "example": "2025-02-09"
+                                                        },
+                                                        "end_date": {
+                                                            "type": "string",
+                                                            "example": "2025-02-19"
+                                                        },
+                                                        "price": {
+                                                            "type": "string",
+                                                            "example": "590.45"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the Tour",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Comment Management"
+                ],
+                "summary": "Delete a specific  comment",
+                "description": "Delete a specific comment",
+                "operationId": "deleteComment",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "ID of the comment to be deleted",
+                        "required": true,
+                        "example": 12
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Comment deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the Tour",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/comments/{comment}/files": {
+            "delete": {
+                "tags": [
+                    "Comment Management"
+                ],
+                "summary": "Delete specific files",
+                "description": "Delete specific comment files",
+                "operationId": "deleteCommentFiles",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "Comment id",
+                        "required": true,
+                        "example": "5"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "images"
+                                ],
+                                "properties": {
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Files deleted successfully"
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation errors"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/roles": {
             "get": {
                 "tags": [
@@ -2730,6 +3445,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Comment Management",
+            "description": "Manage Comment"
+        },
         {
             "name": "Roles Management",
             "description": "Manage user roles"

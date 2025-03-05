@@ -33,3 +33,6 @@ test-filter:
 
 migrate:
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan migrate --env=testing && php artisan migrate"
+
+generate-doc:
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan l5-swagger:generate"

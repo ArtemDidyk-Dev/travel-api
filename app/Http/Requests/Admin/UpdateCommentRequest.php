@@ -45,4 +45,27 @@ class UpdateCommentRequest extends FormRequest
             'errors' => $validator->errors(),
         ], 422));
     }
+
+    /**
+     * Prepare inputs for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_public' => $this->toBoolean($this->is_public),
+        ]);
+    }
+
+    /**
+     * Convert to boolean
+     *
+     * @param $booleable
+     * @return boolean
+     */
+    private function toBoolean($booleable)
+    {
+        return filter_var($booleable, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
 }
