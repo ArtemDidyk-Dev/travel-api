@@ -2302,41 +2302,46 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 7
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Dr. Alivia Stamm"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "johnathon78@example.org"
-                                        },
-                                        "roles": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 3
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "USER"
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 7
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Dr. Alivia Stamm"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johnathon78@example.org"
+                                                },
+                                                "roles": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 3
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "USER"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
                                                 },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2025-02-09 19:22:56"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2025-02-09 19:22:56"
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2025-02-09 19:22:56"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2025-02-09 19:22:56"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -3172,113 +3177,110 @@
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 11
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "vel eaque"
-                                                    },
-                                                    "start_date": {
-                                                        "type": "string",
-                                                        "example": "2025-02-09"
-                                                    },
-                                                    "end_date": {
-                                                        "type": "string",
-                                                        "example": "2025-02-14"
-                                                    },
-                                                    "price": {
-                                                        "type": "string",
-                                                        "example": "204.32"
-                                                    },
-                                                    "images": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 11
-                                                                },
-                                                                "url": {
-                                                                    "type": "string",
-                                                                    "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "example": [
-                                                            {
-                                                                "id": 11,
-                                                                "url": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
-                                                            },
-                                                            {
-                                                                "id": 12,
-                                                                "url": "http://travel-api.localhost/storage/public/images/tours/anotherimage.png"
-                                                            }
-                                                        ]
-                                                    },
-                                                    "comments": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 11
-                                                                },
-                                                                "text": {
-                                                                    "type": "string",
-                                                                    "example": "Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima. Rem et nam blanditiis commodi ex"
-                                                                },
-                                                                "images": {
-                                                                    "type": "array",
-                                                                    "items": {
-                                                                        "properties": {
-                                                                            "id": {
-                                                                                "type": "integer",
-                                                                                "example": 11
-                                                                            },
-                                                                            "url": {
-                                                                                "type": "string",
-                                                                                "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
-                                                                            }
-                                                                        },
-                                                                        "type": "object"
-                                                                    },
-                                                                    "example": [
-                                                                        {
-                                                                            "id": 11,
-                                                                            "url": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
-                                                                        },
-                                                                        {
-                                                                            "id": 12,
-                                                                            "url": "http://travel-api.localhost/storage/public/images/comments/anotherimage.png"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "created_at": {
-                                                                    "type": "string",
-                                                                    "example": "2025 Feb 09"
-                                                                },
-                                                                "user": {
-                                                                    "type": "string",
-                                                                    "example": "Luz Christiansen"
-                                                                },
-                                                                "is_public": {
-                                                                    "description": "Shows the public status of the resource. Only visible to users with the Admin or Editor roles.",
-                                                                    "type": "boolean",
-                                                                    "example": true
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        }
-                                                    }
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 11
                                                 },
-                                                "type": "object"
-                                            }
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "vel eaque"
+                                                },
+                                                "start_date": {
+                                                    "type": "string",
+                                                    "example": "2025-02-09"
+                                                },
+                                                "end_date": {
+                                                    "type": "string",
+                                                    "example": "2025-02-14"
+                                                },
+                                                "price": {
+                                                    "type": "string",
+                                                    "example": "204.32"
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 11
+                                                            },
+                                                            "url": {
+                                                                "type": "string",
+                                                                "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "example": [
+                                                        {
+                                                            "id": 11,
+                                                            "url": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                        },
+                                                        {
+                                                            "id": 12,
+                                                            "url": "http://travel-api.localhost/storage/public/images/tours/anotherimage.png"
+                                                        }
+                                                    ]
+                                                },
+                                                "comments": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 11
+                                                            },
+                                                            "text": {
+                                                                "type": "string",
+                                                                "example": "Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima. Rem et nam blanditiis commodi ex"
+                                                            },
+                                                            "images": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 11
+                                                                        },
+                                                                        "url": {
+                                                                            "type": "string",
+                                                                            "example": "http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "example": [
+                                                                    {
+                                                                        "id": 11,
+                                                                        "url": "http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png"
+                                                                    },
+                                                                    {
+                                                                        "id": 12,
+                                                                        "url": "http://travel-api.localhost/storage/public/images/comments/anotherimage.png"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2025 Feb 09"
+                                                            },
+                                                            "user": {
+                                                                "type": "string",
+                                                                "example": "Luz Christiansen"
+                                                            },
+                                                            "is_public": {
+                                                                "description": "Shows the public status of the resource. Only visible to users with the Admin or Editor roles.",
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"

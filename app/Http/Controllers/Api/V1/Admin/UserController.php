@@ -142,22 +142,27 @@ class UserController extends Controller
         description: 'Successfully retrieved user details',
         content: new OA\JsonContent(
             properties: [
-                new OA\Property(property: 'id', type: 'integer', example: 7),
-                new OA\Property(property: 'name', type: 'string', example: 'Dr. Alivia Stamm'),
-                new OA\Property(property: 'email', type: 'string', example: 'johnathon78@example.org'),
                 new OA\Property(
-                    property: 'roles',
-                    type: 'array',
-                    items: new OA\Items(
-                        properties: [
-                            new OA\Property(property: 'id', type: 'integer', example: 3),
-                            new OA\Property(property: 'name', type: 'string', example: 'USER'),
-                        ],
-                        type: 'object'
-                    )
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 7),
+                        new OA\Property(property: 'name', type: 'string', example: 'Dr. Alivia Stamm'),
+                        new OA\Property(property: 'email', type: 'string', example: 'johnathon78@example.org'),
+                        new OA\Property(
+                            property: 'roles',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 3),
+                                    new OA\Property(property: 'name', type: 'string', example: 'USER'),
+                                ],
+                                type: 'object'
+                            )
+                        ),
+                        new OA\Property(property: 'created_at', type: 'string', example: '2025-02-09 19:22:56'),
+                        new OA\Property(property: 'updated_at', type: 'string', example: '2025-02-09 19:22:56'),
+                    ]
                 ),
-                new OA\Property(property: 'created_at', type: 'string', example: '2025-02-09 19:22:56'),
-                new OA\Property(property: 'updated_at', type: 'string', example: '2025-02-09 19:22:56'),
             ]
         )
     )]
