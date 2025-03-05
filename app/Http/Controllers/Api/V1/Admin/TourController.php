@@ -71,7 +71,7 @@ class TourController extends Controller
     )]
     #[OA\Response(
         response: '201',
-        description: 'Tour get',
+        description: 'Tour update',
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(
@@ -106,6 +106,54 @@ class TourController extends Controller
                                     'url' => 'http://travel-api.localhost/storage/public/images/tours/anotherimage.png',
                                 ],
                             ]
+                        ),
+                        new OA\Property(
+                            property: 'comments',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 11),
+                                    new OA\Property(
+                                        property: 'text',
+                                        type: 'string',
+                                        example: 'Deserunt ut explicabo quis expedita. Dolorem fuga accusamus qui nemo minima. Rem et nam blanditiis commodi ex'
+                                    ),
+                                    new OA\Property(
+                                        property: 'images',
+                                        type: 'array',
+                                        items: new OA\Items(
+                                            properties: [
+                                                new OA\Property(property: 'id', type: 'integer', example: 11),
+                                                new OA\Property(
+                                                    property: 'url',
+                                                    type: 'string',
+                                                    example: 'http://travel-api.localhost/storage/public/images/tours/67ade644283f63.07998705.png'
+                                                ),
+                                            ],
+                                            type: 'object'
+                                        ),
+                                        example: [
+                                            [
+                                                'id' => 11,
+                                                'url' => 'http://travel-api.localhost/storage/public/images/comments/67ade644283f63.07998705.png',
+                                            ],
+                                            [
+                                                'id' => 12,
+                                                'url' => 'http://travel-api.localhost/storage/public/images/comments/anotherimage.png',
+                                            ],
+                                        ]
+                                    ),
+                                    new OA\Property(property: 'created_at', type: 'string', example: '2025 Feb 09'),
+                                    new OA\Property(property: 'user', type: 'string', example: 'Luz Christiansen'),
+                                    new OA\Property(
+                                        property: 'is_public',
+                                        description: 'Shows the public status of the resource. Only visible to users with the Admin or Editor roles.',
+                                        type: 'boolean',
+                                        example: true
+                                    ),
+                                ],
+                                type: 'object'
+                            ),
                         ),
                     ],
                 ),
