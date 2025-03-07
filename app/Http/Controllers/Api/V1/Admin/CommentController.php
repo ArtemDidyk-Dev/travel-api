@@ -168,7 +168,6 @@ class CommentController extends Controller
         return CommentResource::collection($comments);
     }
 
-
     #[OA\Get(
         path: '/api/v1/admin/comments/{comment}',
         description: 'Show comment of the resource',
@@ -257,8 +256,6 @@ class CommentController extends Controller
 
         return CommentResource::make($comment);
     }
-
-
 
     #[OA\POST(
         path: '/api/v1/admin/comments/{comment}',
@@ -416,7 +413,6 @@ class CommentController extends Controller
             )
         )
     )]
-
     public function update(UpdateCommentRequest $request, Comment $comment): CommentResource
     {
         $comment->load(['user', 'images', 'tour.travels']);
@@ -490,11 +486,10 @@ class CommentController extends Controller
             return response()->json([], 204);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'An error occurred. Please try again later. '.$e->getMessage(),
+                'message' => 'An error occurred. Please try again later. ' . $e->getMessage(),
             ], 500);
         }
     }
-
 
     #[OA\Delete(
         path: '/api/v1/admin/comments/{comment}/files',
@@ -520,7 +515,6 @@ class CommentController extends Controller
                 ]
             )
         ),
-
         tags: ['Comment Management'],
         parameters: [
             new OA\Parameter(name: 'comment', description: 'Comment id', in: 'path', required: true, example: '5'),
@@ -560,7 +554,7 @@ class CommentController extends Controller
             return response()->json([], 204);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'An error occurred. Please try again later. '.$e->getMessage(),
+                'message' => 'An error occurred. Please try again later. ' . $e->getMessage(),
             ], 500);
         }
     }

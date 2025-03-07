@@ -48,8 +48,6 @@ class UpdateCommentRequest extends FormRequest
 
     /**
      * Prepare inputs for validation.
-     *
-     * @return void
      */
     protected function prepareForValidation(): void
     {
@@ -61,7 +59,6 @@ class UpdateCommentRequest extends FormRequest
     /**
      * Convert to boolean
      *
-     * @param $booleable
      * @return boolean
      */
     private function toBoolean($booleable)
