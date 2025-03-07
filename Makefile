@@ -1,6 +1,4 @@
-create-env:
-	cp .env.example .env
-export $(shell sed 's/=.*//' .env)
+include .env
 build:
 	docker stop $$(docker ps -aq)
 	docker compose build

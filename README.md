@@ -25,7 +25,7 @@
 git clone git@github.com:ArtemDidyk-Dev/travel-api.git
 ```
 ```
-make create-env
+copy .env.example > .env
 ```
 ```
 make build
