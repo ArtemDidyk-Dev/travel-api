@@ -14,6 +14,14 @@ build:
 run:
 	docker-compose up -d
 	@echo "\033[0;32mDone\033[0m"
+
+start-queue:
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan queue:work"
+
+create-user:
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan create:user"
+	@echo "\033[0;32mDone\033[0m"
+
 stop:
 	docker-compose down
 	@echo "\033[0;32mDone\033[0m"

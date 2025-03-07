@@ -33,7 +33,10 @@ class DatabaseSeeder extends Seeder
             ],
         ];
         Role::insert($roles);
-        User::factory(10)->create();
+        $users = User::factory(10)->create();
+        foreach ($users as $user) {
+            $user->roles()->attach(RoleEnum::USER->value);
+        }
         Comment::factory(10)->create();
 
     }

@@ -30,3 +30,51 @@ copy .env.example > .env
 ```
 make build
 ```
+#### Adding a user (administrator) 🛡️
+```
+make create-user
+```
+#### Start queue 🚶‍♂️🚶‍♂️🚶‍♂️
+```
+make start-queue
+```
+
+## Link project 🏁
+```
+http://travel-api.localhost/api/v1/travels/
+```
+
+## Link Documentation 📁
+```
+http://travel-api.localhost/api/documentation
+```
+
+# Additional information 🧐
+
+#### Adding fixtures for a test 🧪
+```
+make create-test-db
+make migrate-test-db
+```
+#### Start test  🛠️ 
+```
+make test
+make test-filter
+```
+#### Generate Documentation 📗
+```
+make generate-doc
+```
+#### Start esc ✏️
+```
+make ecs
+```
+#### Link to email services ✉️
+```
+http://travel-api.localhost:8025/
+```
+
+#### Link to phpMyAdmin 📝
+```
+http://localhost:8090/
+```
