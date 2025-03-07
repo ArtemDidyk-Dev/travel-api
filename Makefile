@@ -4,10 +4,9 @@ build:
 	docker compose build
 	docker network create ${NETWORK_NAME}_proxynet
 	docker compose up -d
-	cp .env.example .env
 	docker exec -it ${PROJECT_NAME}_app sh -c "composer install"
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan key:generate"
-	docker exec -it ${PROJECT_NAME}_app bash -c "php artisan storage:link"
+	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan storage:link"
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan migrate"
 	docker exec -it ${PROJECT_NAME}_app sh -c "php artisan db:seed"
 	exit
