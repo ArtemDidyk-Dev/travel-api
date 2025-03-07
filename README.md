@@ -78,3 +78,12 @@ http://travel-api.localhost:8025/
 ```
 http://localhost:8090/
 ```
+
+#### Start project 🟢 
+```
+make run
+```
+#### Stop project 🔴
+```
+make stop
+```
